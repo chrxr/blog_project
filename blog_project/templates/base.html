@@ -1,0 +1,40 @@
+{% load static wagtailuserbar %}
+
+<!DOCTYPE html>
+<!--[if lt IE 7]>      <html class="no-js lt-ie9 lt-ie8 lt-ie7"> <![endif]-->
+<!--[if IE 7]>         <html class="no-js lt-ie9 lt-ie8"> <![endif]-->
+<!--[if IE 8]>         <html class="no-js lt-ie9"> <![endif]-->
+<!--[if gt IE 8]><!--> <html class="no-js"> <!--<![endif]-->
+    <head>
+        <meta charset="utf-8" />
+        <meta http-equiv="X-UA-Compatible" content="IE=edge" />
+        <title>{% block title %}{% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}{% endblock %}{% block title_suffix %}{% endblock %}</title>
+        <meta name="description" content="" />
+        <meta name="viewport" content="width=device-width, initial-scale=1" />
+
+        {# Global stylesheets #}
+        <link rel="stylesheet" type="text/css" href="{% static 'css/blog_project.css' %}">
+        <link rel="stylesheet" media="(max-width: 800px)" href="{% static 'css/blog_project_mobile.css' %}"/>
+        <link rel="stylesheet" href="//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css">
+        {% block extra_css %}
+            {# Override this in templates to add extra stylesheets #}
+        {% endblock %}
+    </head>
+
+    <body class="{% block body_class %}{% endblock %}">
+        {% wagtailuserbar %}
+        {% include "includes/footer.html" %}
+        <section class='main-body'>
+        {% block content %}{% endblock %}
+        </section>
+
+        
+        {# Global javascript #}
+        <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
+        <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
+        <script type="text/javascript" src="{% static 'js/blog_project.js' %}"></script>
+        {% block extra_js %}
+            {# Override this in templates to add extra javascript #}
+        {% endblock %}
+    </body>
+</html>
