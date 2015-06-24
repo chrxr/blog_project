@@ -10,3 +10,4 @@ Vagrantfile.local
 /db.sqlite3
 /node_modules
 /.sass-cache
+*.log
