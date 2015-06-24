@@ -1,6 +1,8 @@
 from django.db import models
 
 from modelcluster.fields import ParentalKey
+from modelcluster.tags import ClusterTaggableManager
+from taggit.models import Tag, TaggedItemBase
 
 from wagtail.wagtailcore.models import Page, Orderable
 from wagtail.wagtailcore.fields import RichTextField, StreamField
@@ -14,6 +16,9 @@ from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailsearch import index
 
+
+class BlogPageTag(TaggedItemBase):
+    content_object = ParentalKey('blog.BlogPage', related_name='tagged_items')
 
 class BlogPage(Page):
     subtitle = models.CharField(max_length=255, null=True, blank=True)
@@ -32,6 +37,7 @@ class BlogPage(Page):
         ('image', ImageChooserBlock(icon='image')),
         ('codeblock', TextBlock(icon='cogs')),
     ], blank=True, null=True)
+    tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     listing_intro = RichTextField(null=True, blank=True)
     listing_image = models.ForeignKey(
         'wagtailimages.Image',
@@ -52,6 +58,7 @@ class BlogPage(Page):
         FieldPanel('date'),
         FieldPanel('intro'),
         StreamFieldPanel('body'),
+        FieldPanel('tags'),
     ]
 
     promote_panels = Page.promote_panels + [

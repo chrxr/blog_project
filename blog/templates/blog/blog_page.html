@@ -1,6 +1,6 @@
 {% extends "base.html" %}
 
-{% load static wagtailcore_tags wagtailimages_tags %}
+{% load static wagtailcore_tags wagtailimages_tags static %}
 
 {% block body_class %}templage-blogpage{% endblock %}
 
@@ -28,6 +28,9 @@
             {% else %}
                 {{ block }}
             {% endif %}
+        {% endfor %}
+        {% for tag in self.tags.all %}
+            <a class='tag' href="localhost:8000?tag={{ tag }}">{{ tag }}</a>
         {% endfor %}
     </article>
 {% endblock %}
