@@ -40,6 +40,19 @@ h1 {
 
 }
 
+.main-title {
+	font-size:3em;
+}
+
+.listing-links {
+	text-decoration: none;
+	color:#424242;
+}
+
+.listing-links:hover {
+	color:#903;
+}
+
 .intro p:first-child:first-letter { 
 	float: left; 
 	color: #903; 
