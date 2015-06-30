@@ -197,10 +197,18 @@ p > .richtext-image {
 	-webkit-transition: color 0.3s ease-in-out;
 	margin:0;
 	font-size:0.5em;
-	color:grey;
 }
 
 .site-title:hover {
+	color:#903;
+}
+
+.site-title a {
+	text-decoration: none;
+	color:grey;
+}
+
+.site-title a:hover {
 	color:#903;
 }
 
