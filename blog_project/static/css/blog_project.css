@@ -49,6 +49,10 @@ h1 {
 	color:#424242;
 }
 
+/*.listing-links h2 {
+	color:#000;
+}*/
+
 .listing-links:hover {
 	color:#903;
 }

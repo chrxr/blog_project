@@ -72,8 +72,7 @@ class BlogPage(Page):
 
     def serve(self, request):
         # Get blogs
-        site_root = self.get_parent().url
-        print(site_root)
+        site_root = self.get_parent()
         return render(request, self.template, {
             'self': self,
             'site_root': site_root,
