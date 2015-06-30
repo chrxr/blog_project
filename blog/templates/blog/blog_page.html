@@ -30,7 +30,7 @@
             {% endif %}
         {% endfor %}
         {% for tag in self.tags.all %}
-            <a class='tag' href="{{ site_root }}?tag={{ tag }}">{{ tag }}</a>
+            <a class='tag' href="{% pageurl self.home_page %}?tag={{ tag }}">{{ tag }}</a>
         {% endfor %}
     </article>
     <!-- {{site_root}} -->

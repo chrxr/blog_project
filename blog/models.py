@@ -66,9 +66,9 @@ class BlogPage(Page):
         ImageChooserPanel('listing_image'),
     ]
 
-    # @property
-    # def site_root(self):
-    #     return site.root_page
+    @property
+    def home_page(self):
+        return self.get_parent()
 
     def serve(self, request):
         # Get blogs
