@@ -3,8 +3,8 @@ from django.db import models
 from modelcluster.fields import ParentalKey
 from modelcluster.tags import ClusterTaggableManager
 from taggit.models import Tag, TaggedItemBase
-
-from wagtail.wagtailcore.models import Page, Orderable
+from django.shortcuts import render
+from wagtail.wagtailcore.models import Page, Orderable, Site
 from wagtail.wagtailcore.fields import RichTextField, StreamField
 from wagtail.wagtailcore.blocks import TextBlock, ChooserBlock, StructBlock, ListBlock, StreamBlock, FieldBlock, CharBlock, RichTextBlock, PageChooserBlock, RawHTMLBlock
 from wagtail.wagtailadmin.edit_handlers import (FieldPanel,
@@ -65,6 +65,19 @@ class BlogPage(Page):
         FieldPanel('listing_intro'),
         ImageChooserPanel('listing_image'),
     ]
+
+    # @property
+    # def site_root(self):
+    #     return site.root_page
+
+    def serve(self, request):
+        # Get blogs
+        site_root = self.get_parent().url
+        print(site_root)
+        return render(request, self.template, {
+            'self': self,
+            'site_root': site_root,
+        })
 
 class LinkFields(models.Model):
     link_external = models.URLField("External link", blank=True)
