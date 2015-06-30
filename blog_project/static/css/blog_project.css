@@ -185,7 +185,7 @@ p > .richtext-image {
 	color:white;
 	margin-top:4px;
 	-webkit-text-stroke: 1px grey;
-	display:none !important;
+	display:none;
 }
 
 .nav-arrow:hover {
