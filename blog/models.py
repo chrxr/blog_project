@@ -1,12 +1,18 @@
 from django.db import models
 
+from django.utils.safestring import mark_safe
+from markdown import markdown
+from pygments import highlight
+from pygments.formatters import get_formatter_by_name
+from pygments.lexers import get_lexer_by_name
+
 from modelcluster.fields import ParentalKey
 from modelcluster.tags import ClusterTaggableManager
 from taggit.models import Tag, TaggedItemBase
 from django.shortcuts import render
 from wagtail.wagtailcore.models import Page, Orderable, Site
 from wagtail.wagtailcore.fields import RichTextField, StreamField
-from wagtail.wagtailcore.blocks import TextBlock, ChooserBlock, StructBlock, ListBlock, StreamBlock, FieldBlock, CharBlock, RichTextBlock, PageChooserBlock, RawHTMLBlock
+from wagtail.wagtailcore.blocks import ChoiceBlock, TextBlock, ChooserBlock, StructBlock, ListBlock, StreamBlock, FieldBlock, CharBlock, RichTextBlock, PageChooserBlock, RawHTMLBlock
 from wagtail.wagtailadmin.edit_handlers import (FieldPanel,
                                                 InlinePanel,
                                                 MultiFieldPanel,
@@ -19,6 +25,58 @@ from wagtail.wagtailsearch import index
 
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('blog.BlogPage', related_name='tagged_items')
+
+class CodeBlock(StructBlock):
+    """
+    Code Highlighting Block
+    """
+    LANGUAGE_CHOICES = (
+        ('bash', 'Bash/Shell'),
+        ('css', 'CSS'),
+        ('django', 'Django templating language'),
+        ('html', 'HTML'),
+        ('javascript', 'Javascript'),
+        ('python', 'Python'),
+        ('scss', 'SCSS'),
+    )
+
+    language = ChoiceBlock(choices=LANGUAGE_CHOICES)
+    code = TextBlock()
+
+    class Meta:
+        icon = 'code'
+
+    def render(self, value):
+        src = value['code'].strip('\n')
+        lang = value['language']
+
+        lexer = get_lexer_by_name(lang)
+        formatter = get_formatter_by_name(
+            'html',
+            linenos=None,
+            cssclass='codehilite',
+            style='default',
+            noclasses=False,
+        )
+        return mark_safe(highlight(src, lexer, formatter))
+
+
+class MarkDownBlock(TextBlock):
+    """ MarkDown Block """
+
+    class Meta:
+        icon = 'code'
+
+    def render_basic(self, value):
+        md = markdown(
+            value,
+            [
+                'markdown.extensions.fenced_code',
+                'codehilite',
+            ],
+        )
+        return mark_safe(md)
+
 
 class BlogPage(Page):
     subtitle = models.CharField(max_length=255, null=True, blank=True)
@@ -36,6 +94,8 @@ class BlogPage(Page):
         ('paragraph', RichTextBlock(icon='pilcrow')),
         ('image', ImageChooserBlock(icon='image')),
         ('codeblock', TextBlock(icon='cogs')),
+        ('markdown', MarkDownBlock()),
+        ('real_codeblock', CodeBlock()),
     ], blank=True, null=True)
     tags = ClusterTaggableManager(through=BlogPageTag, blank=True)
     listing_intro = RichTextField(null=True, blank=True)
