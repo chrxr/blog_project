@@ -35,6 +35,7 @@
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
         {% include "includes/footer.html" %}
+        {% include "includes/search_box.html" %}
         <section class='main-body'>
         {% block content %}{% endblock %}
         </section>

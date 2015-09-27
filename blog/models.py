@@ -141,26 +141,30 @@ class BlogPage(Page):
         site_root = self.get_parent()
         blogs = BlogPage.objects.filter(live=True).order_by('-date')
         blog_list = []
+        next_blog = ''
+        previous_blog = ''
         for blog in blogs:
             blog_list.append(blog.id)
-        current_index = blog_list.index(self.id)
-        if current_index > 0:
-            previous_index = current_index - 1
-        next_index = current_index + 1
-        try: 
-            next_blog = BlogPage.objects.filter(id = blog_list[next_index])
-        except:
-            next_blog = '/'
-        try:
-            previous_blog = BlogPage.objects.filter(id = blog_list[previous_index])
-        except:
-            previous_blog = '/'
-        print(next_blog)
+        if self.id:
+            current_index = blog_list.index(self.id)
+            if current_index > 0:
+                previous_index = current_index - 1
+            next_index = current_index + 1
+            try: 
+                next_blog = BlogPage.objects.filter(id = blog_list[next_index])
+            except:
+                next_blog = '/'
+            try:
+                previous_blog = BlogPage.objects.filter(id = blog_list[previous_index])
+            except:
+                previous_blog = '/'
+            show_nav = True
         return render(request, self.template, {
             'self': self,
             'site_root': site_root,
             'next_blog': next_blog,
             'previous_blog': previous_blog,
+            'show_nav': show_nav,
         })
 
 class LinkFields(models.Model):

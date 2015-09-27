@@ -1,6 +1,8 @@
 {% load static wagtailcore_tags wagtailimages_tags static %}
 <section class='footer'>
 	<div id='footer-container' class='footer-container'>
+	{% if show_nav %}
+		{% if previous_blog != '' and next_blog != '' %}
 		<div class='item'>
 			{% if self.url != '/' %}
 			<a href='{% if previous_blog == '/' %}/{% else %} {% pageurl previous_blog.first %} {% endif %}'>
@@ -18,5 +20,7 @@
 			</a>
 			{% endif %}
 		</div>
+		{% endif %}
+	{% endif %}
 	</div>
 </section>

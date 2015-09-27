@@ -23,7 +23,9 @@ class HomePage(Page):
         print(tag)
         if tag:
             blogs = blogs.filter(tags__name=tag)
+        show_nav = True
         return render(request, self.template, {
             'self': self,
             'blogs': blogs,
+            'show_nav': show_nav,
         })

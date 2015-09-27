@@ -21,7 +21,7 @@ BASE_DIR = os.path.dirname(PROJECT_DIR)
 # See https://docs.djangoproject.com/en/1.7/howto/deployment/checklist/
 
 
-# Application definition
+# Application definitions
 
 INSTALLED_APPS = (
     'django.contrib.admin',
@@ -47,6 +47,7 @@ INSTALLED_APPS = (
     'wagtail.wagtailredirects',
     'wagtail.wagtailforms',
     'wagtail.contrib.wagtailsitemaps',
+    'wagtail.contrib.wagtailsearchpromotions',
     'search',
     'home',
     'blog',
@@ -142,3 +143,12 @@ MEDIA_URL = '/media/'
 # Wagtail settings
 
 WAGTAIL_SITE_NAME = "blog_project"
+
+WAGTAILSEARCH_BACKENDS = {
+    'default': {
+        'BACKEND': 'wagtail.wagtailsearch.backends.elasticsearch',
+        'URLS': ['http://localhost:9200'],
+        'INDEX': 'wagtail',
+        'TIMEOUT': 5,
+    }
+}

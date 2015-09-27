@@ -7,12 +7,7 @@
 
 {% block content %}
     <h1>Search</h1>
-
-    <form action="{% url 'search' %}" method="get">
-        <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search">
-    </form>
-
+    
     {% if search_picks %}
          <ul>
             {% for pick in search_picks %}

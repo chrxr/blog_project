@@ -1,0 +1,6 @@
+<div class="search">
+    <form action="{% url 'search' %}" method="get">
+        <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+        <input type="submit" value="Search">
+    </form>
+</div>
