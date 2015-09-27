@@ -143,6 +143,7 @@ class BlogPage(Page):
         blog_list = []
         next_blog = ''
         previous_blog = ''
+        show_nav = True
         for blog in blogs:
             blog_list.append(blog.id)
         if self.id:
@@ -158,7 +159,6 @@ class BlogPage(Page):
                 previous_blog = BlogPage.objects.filter(id = blog_list[previous_index])
             except:
                 previous_blog = '/'
-            show_nav = True
         return render(request, self.template, {
             'self': self,
             'site_root': site_root,
