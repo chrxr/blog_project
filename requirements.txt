@@ -1,5 +1,8 @@
 Django==1.8.2
+Markdown==2.6.2
+MarkupSafe==0.23
 Pillow==2.8.2
+Pygments==2.0.2
 Unidecode==0.04.18
 Willow==0.2.1
 beautifulsoup4==4.3.2
@@ -8,6 +11,8 @@ django-compressor==1.5
 django-modelcluster==0.6.2
 django-taggit==0.15.0
 django-treebeard==3.0
+djangorestframework==3.2.4
+elasticsearch==1.7.0
 html5lib==0.999
 postgres==2.1.2
 psycopg2==2.6.1
@@ -15,6 +20,5 @@ pytz==2015.4
 requests==2.7.0
 six==1.9.0
 wagtail==1.2
-Pygments==2.0.2
-Markdown==2.6.2
-MarkupSafe==0.23
+urllib3==1.12
+

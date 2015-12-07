@@ -14,7 +14,9 @@
         {% if self.subtitle %}
             <h3 class='subtitle'>{{ self.subtitle }}</h3>
         {% endif %}
+        {% if self.date %}
         <p class="meta">{{ self.date }}</p>
+        {% endif %}
 
         {% if self.main_image %}
           {% image self.main_image width-400 %}
