@@ -17,14 +17,12 @@ LOGGING = {
     		'class': 'logging.FileHandler',
     		'filename': '~/blog_project/debug.log',
     	},
-        'console': {
-            'class': 'logging.StreamHandler',
-        },
     },
     'loggers': {
-        'django': {
-            'handlers': ['console'],
-            'level': os.getenv('DJANGO_LOG_LEVEL', 'ERROR'),
+        'django.request': {
+            'handlers': ['file'],
+            'level': 'DEBUG',
+            'propagate': True,
         },
     },
 }
