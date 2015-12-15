@@ -16,7 +16,7 @@ LOGGING = {
     		'level': 'DEBUG'
     		'class': 'logging.FileHandler',
     		'filename': '~/blog_project/debug.log',
-    	}
+    	},
         'console': {
             'class': 'logging.StreamHandler',
         },
