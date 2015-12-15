@@ -18,7 +18,7 @@ LOGGING = {
     	'file': {
     		'level': 'DEBUG',
     		'class': 'logging.FileHandler',
-    		'filename': '~/blog_project/debug.log',
+    		'filename': SITE_ROOT + '/debug.log',
     	},
     },
     'loggers': {
