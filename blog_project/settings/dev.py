@@ -13,7 +13,7 @@ LOGGING = {
     'disable_existing_loggers': False,
     'handlers': {
     	'file': {
-    		'level': 'DEBUG'
+    		'level': 'DEBUG',
     		'class': 'logging.FileHandler',
     		'filename': '~/blog_project/debug.log',
     	},
