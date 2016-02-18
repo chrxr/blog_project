@@ -21,7 +21,39 @@ from wagtail.wagtailadmin.edit_handlers import (FieldPanel,
 from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
 from wagtail.wagtailimages.blocks import ImageChooserBlock
 from wagtail.wagtailsearch import index
+from wagtail.wagtailsnippets.models import register_snippet
 
+# -- Start snippets -- #
+
+class BookmarkTag(TaggedItemBase):
+    content_object = ParentalKey('blog.Bookmark', related_name='tagged_items')
+
+class Bookmark(models.Model):
+    url = models.URLField("Bookmark URL")
+    title = models.CharField("Bookmark title", max_length=255, blank=True)
+    notes = RichTextField("Bookmark notes", null=True, blank=True)
+    date_read = models.DateField()
+    tags = ClusterTaggableManager(through=BookmarkTag, blank=True)
+
+    panels = [
+        FieldPanel('url'),
+        FieldPanel('title'),
+        FieldPanel('notes'),
+        FieldPanel('date_read'),
+        FieldPanel('tags'),
+    ]
+
+    def __str__(self):
+        return self.title
+
+register_snippet(Bookmark)
+
+
+class BookmarkPlacement(models.Model):
+    page = ParentalKey('wagtailcore.Page', related_name='bookmark_placements')
+    quote = models.ForeignKey('blog.Bookmark', related_name='+')
+
+# -- End snippets -- #
 
 class BlogPageTag(TaggedItemBase):
     content_object = ParentalKey('blog.BlogPage', related_name='tagged_items')
@@ -151,7 +183,7 @@ class BlogPage(Page):
             if current_index > 0:
                 previous_index = current_index - 1
             next_index = current_index + 1
-            try: 
+            try:
                 next_blog = BlogPage.objects.filter(id = blog_list[next_index])
             except:
                 next_blog = '/'
