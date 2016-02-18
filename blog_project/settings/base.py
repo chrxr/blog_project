@@ -146,9 +146,6 @@ WAGTAIL_SITE_NAME = "blog_project"
 
 WAGTAILSEARCH_BACKENDS = {
     'default': {
-        'BACKEND': 'wagtail.wagtailsearch.backends.elasticsearch',
-        'URLS': ['http://localhost:9200'],
-        'INDEX': 'wagtail',
-        'TIMEOUT': 5,
+        'BACKEND': 'wagtail.wagtailsearch.backends.db',
     }
 }

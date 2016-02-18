@@ -247,3 +247,18 @@ class BlogIndexPage(Page):
     content_panels = Page.content_panels + [
         InlinePanel('related_links', label="Related links"),
     ]
+
+class BookmarkPage(Page):
+    intro = models.CharField(max_length=250, null=True, blank=True)
+
+    content_panels = Page.content_panels + [
+        FieldPanel('intro'),
+    ]
+
+    def serve(self, request):
+        bookmarks = Bookmark.objects.all()
+        print(bookmarks)
+        return render(request, self.template, {
+            'self': self,
+            'bookmarks': bookmarks,
+        })
