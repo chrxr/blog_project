@@ -8,7 +8,10 @@ from pygments.lexers import get_lexer_by_name
 
 from modelcluster.fields import ParentalKey
 from modelcluster.tags import ClusterTaggableManager
+from modelcluster.models import ClusterableModel
+
 from taggit.models import Tag, TaggedItemBase
+from taggit.managers import TaggableManager
 from django.shortcuts import render
 from wagtail.wagtailcore.models import Page, Orderable, Site
 from wagtail.wagtailcore.fields import RichTextField, StreamField
@@ -28,12 +31,12 @@ from wagtail.wagtailsnippets.models import register_snippet
 class BookmarkTag(TaggedItemBase):
     content_object = ParentalKey('blog.Bookmark', related_name='tagged_items')
 
-class Bookmark(models.Model):
+class Bookmark(ClusterableModel):
     url = models.URLField("Bookmark URL")
     title = models.CharField("Bookmark title", max_length=255, blank=True)
     notes = RichTextField("Bookmark notes", null=True, blank=True)
     date_read = models.DateField()
-    tags = ClusterTaggableManager(through=BookmarkTag, blank=True)
+    tags = TaggableManager(through=BookmarkTag, blank=True)
 
     panels = [
         FieldPanel('url'),
