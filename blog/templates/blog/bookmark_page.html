@@ -5,9 +5,13 @@
 {% block body_class %}template-bookmarkpage{% endblock %}
 
 {% block content %}
-<h1>Hello</h1>
-  {{ page.title }}
-  {% for bookmark in bookmarks %}
-   <p>{{ bookmark.url }}</p>
-  {% endfor %}
+<article class='content-container'>
+  <h1 class='blog-title'>{{ page.title }}</h1>
+
+    {% for bookmark in bookmarks %}
+     <h2><a href='{{ bookmark.url}}'>{{ bookmark.title }}</a></h2>
+     <p>{{ bookmark.notes | richtext }}</p>
+
+    {% endfor %}
+</article>
 {% endblock %}

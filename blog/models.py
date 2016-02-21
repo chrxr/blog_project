@@ -261,7 +261,9 @@ class BookmarkPage(Page):
     def serve(self, request):
         bookmarks = Bookmark.objects.all()
         print(bookmarks)
+        show_nav = True
         return render(request, self.template, {
-            'self': self,
+            # 'show_nav': show_nav,
+            'page': self,
             'bookmarks': bookmarks,
         })
