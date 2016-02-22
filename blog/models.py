@@ -47,7 +47,7 @@ class Bookmark(ClusterableModel):
     ]
 
     def __str__(self):
-        return self.title
+        return self.title.encode("utf8")
 
 register_snippet(Bookmark)
 
