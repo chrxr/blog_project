@@ -3,12 +3,8 @@ import os
 
 os.environ.setdefault("DJANGO_SETTINGS_MODULE", "blog_project.settings")
 
-import django
 from django.db import models
-
 from blog.models import Bookmark
-
-django.setup()
 
 with open('csvtest.csv', 'rt') as f:
     reader = csv.reader(f)
