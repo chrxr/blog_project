@@ -36,7 +36,7 @@ h1, h2, h3, h4 {
 }
 
 h1 {
-	color: #903; 
+	color: #903;
 
 }
 
@@ -63,13 +63,13 @@ h1 {
 	color:#903;
 }
 
-.intro p:first-child:first-letter { 
-	float: left; 
-	color: #903; 
-	font-size: 5em; 
-	line-height: 60px; 
-	padding-top: 4px; 
-	padding-right: 8px; 
+.intro p:first-child:first-letter {
+	float: left;
+	color: #903;
+	font-size: 5em;
+	line-height: 60px;
+	padding-top: 4px;
+	padding-right: 8px;
 	padding-left: 3px;
 }
 
@@ -231,4 +231,15 @@ p > .richtext-image {
 	position:absolute;
 	top:0;
 	left:0;
+}
+
+.tag_list {
+	list-style-type: none;
+	margin-left:0;
+	padding:0;
+}
+
+.tag_list > li {
+	display:inline;
+	padding-right:10px;
 }

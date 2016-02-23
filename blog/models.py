@@ -259,11 +259,30 @@ class BookmarkPage(Page):
     ]
 
     def serve(self, request):
-        bookmarks = Bookmark.objects.all()
-        print(bookmarks)
+        if request.method == 'GET':
+            request_tag = request.GET.get('tag', False)
+            if request_tag:
+                bookmarks = Bookmark.objects.filter(tags__name__contains=request_tag)
+                print(bookmarks)
+            else:
+                bookmarks = Bookmark.objects.all()
+        else:
+            bookmarks = Bookmark.objects.all()
+
+        tags = []
+
+        for bookmark in bookmarks:
+            tag_list = bookmark.tags.all()
+            for tag in tag_list:
+                print(tag.name)
+                tags.append(tag)
+
         show_nav = True
+
         return render(request, self.template, {
             # 'show_nav': show_nav,
+            'request_tag': request_tag,
             'page': self,
             'bookmarks': bookmarks,
+            'tags': tags,
         })
