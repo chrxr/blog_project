@@ -263,7 +263,6 @@ class BookmarkPage(Page):
             request_tag = request.GET.get('tag', False)
             if request_tag:
                 bookmarks = Bookmark.objects.filter(tags__name__contains=request_tag)
-                print(bookmarks)
             else:
                 bookmarks = Bookmark.objects.all()
         else:
@@ -276,6 +275,13 @@ class BookmarkPage(Page):
             for tag in tag_list:
                 print(tag.name)
                 tags.append(tag)
+
+        def f7(seq):
+            seen = set()
+            seen_add = seen.add
+            return [x for x in seq if not (x in seen or seen_add(x))]
+
+        tags = f7(tags)
 
         show_nav = True
 
