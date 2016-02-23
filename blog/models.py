@@ -281,7 +281,7 @@ class BookmarkPage(Page):
             seen_add = seen.add
             return [x for x in seq if not (x in seen or seen_add(x))]
 
-        tags = f7(tags)
+        tags = sorted(f7(tags), key=str.lower)
 
         show_nav = True
 
