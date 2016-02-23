@@ -273,8 +273,7 @@ class BookmarkPage(Page):
         for bookmark in bookmarks:
             tag_list = bookmark.tags.all()
             for tag in tag_list:
-                print(tag.name)
-                tags.append(tag)
+                tags.append(str(tag.name))
 
         def f7(seq):
             seen = set()
