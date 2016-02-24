@@ -3,13 +3,14 @@
 	white-space: pre;
     padding:1em;
     font-size:0.85em;
+    overflow: scroll;
 }
 
 .codehilite *{
     font-weight:normal !important;
 }
 
-/* Pasted from https://github.com/richleland/pygments-css/edit/master/friendly.css. 
+/* Pasted from https://github.com/richleland/pygments-css/edit/master/friendly.css.
 Hence the lazy !important, above, to remove bold formatting */
 
 .codehilite .hll { background-color: #ffffcc }
