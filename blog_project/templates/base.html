@@ -30,6 +30,18 @@
           ga('send', 'pageview');
 
         </script>
+        <script type="application/ld+json">
+        {
+          "@context": "http://schema.org",
+          "@type": "Blog",
+          "author": "Chris Rogers",
+          "url": "https://{{ site_root }}{{ self.url_path }}",
+          "name": "{{ self.title }}",
+          {% if self.date %}
+          "datePublished": "{{ self.date }}"
+          {% endif %}
+        }
+        </script>
     </head>
 
     <body class="{% block body_class %}{% endblock %}">
@@ -40,7 +52,7 @@
         {% block content %}{% endblock %}
         </section>
 
-        
+
         {# Global javascript #}
         <script src="//code.jquery.com/jquery-1.11.3.min.js"></script>
         <script src="//code.jquery.com/jquery-migrate-1.2.1.min.js"></script>
