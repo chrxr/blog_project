@@ -1,0 +1,17 @@
+{% extends "base.html" %}
+
+{% load static wagtailcore_tags wagtailimages_tags static %}
+
+{% block extra_css %}
+        <link rel="stylesheet" href="{% static 'css/codehighlight.css' %}"/>
+{% endblock %}
+
+{% block body_class %}template-blogpage{% endblock %}
+
+{% block content %}
+    <article class='content-container'>
+        <h1 class='blog-title'>THIS IS A TESTTTT</h1>
+      
+    </article>
+    <!--{{ previous_blog.first.url }}-->
+{% endblock %}
