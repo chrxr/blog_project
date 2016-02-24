@@ -11,8 +11,9 @@
         <title>{% block title %}{% if self.seo_title %}{{ self.seo_title }}{% else %}{{ self.title }}{% endif %}{% endblock %}{% block title_suffix %}{% endblock %}</title>
         <meta name="description" content="{% if self.search_description %}{{ self.search_description }}{% endif %}" />
         <meta name="viewport" content="width=device-width, initial-scale=1" />
+        {% if site_root %}
         <link rel="amphtml" href="https://{{ site_root }}{{ self.url }}amp">
-
+        {% endif %}
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/blog_project.css' %}">
 
