@@ -37,9 +37,7 @@
           "author": "Chris Rogers",
           "url": "https://{{ site_root }}{{ self.url }}",
           "name": "{{ self.title }}",
-          {% if self.date %}
-          "datePublished": "{{ self.date }}"
-          {% endif %}
+          {% if self.date %}"datePublished": "{{ self.date }}",{% endif %}
         }
         </script>
     </head>
