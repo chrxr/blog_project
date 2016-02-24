@@ -27,6 +27,9 @@
                 <pre class='codeblock'>
                     {{ block.value }}
                 </pre>
+            {% elif block.block_type == 'image' %}
+                {% image block.value fill-80x80 as theimage %}
+                <amp-img src="{{ theimage.url }}" alt="THIS IS THE ALT" width="80" height="80"></amp-img>
             {% else %}
                 {{ block }}
             {% endif %}
