@@ -12,12 +12,12 @@
     <p>Selected tag: {{ request_tag }} - <a href='{{ page.url }}'>x</a></p>
   {% else %}
     <ul class='tag_list'>
-      {% for tag in tags %}<li><a href='{{ page.url }}?tag={{tag}}'>{{ tag }}</a></li>{% endfor %}
+      {% for tag in tags %}<li><a class='listing-links' href='{{ page.url }}?tag={{tag}}'>{{ tag }}</a></li>{% endfor %}
     </ul>
     {% endif %}
     <hr />
     {% for bookmark in bookmarks %}
-     <h2><a href='{{ bookmark.url}}'>{{ bookmark.title }}</a></h2>
+     <h2><a class='listing-links'  href='{{ bookmark.url}}'>{{ bookmark.title }}</a></h2>
      <p>{{ bookmark.notes | richtext }}</p>
 
     {% endfor %}
