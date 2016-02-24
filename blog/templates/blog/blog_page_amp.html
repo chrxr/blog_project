@@ -1,17 +1,39 @@
-{% extends "base.html" %}
+{% extends "base_amp.html" %}
 
 {% load static wagtailcore_tags wagtailimages_tags static %}
-
-{% block extra_css %}
-        <link rel="stylesheet" href="{% static 'css/codehighlight.css' %}"/>
-{% endblock %}
 
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
     <article class='content-container'>
-        <h1 class='blog-title'>THIS IS A TESTTTT</h1>
-      
+        <h1 class='blog-title'>{{ self.title }}</h1>
+        {% if self.subtitle %}
+            <h3 class='subtitle'>{{ self.subtitle }}</h3>
+        {% endif %}
+        {% if self.date %}
+        <p class="meta">{{ self.date }}</p>
+        {% endif %}
+
+        {% if self.main_image %}
+          {% image self.main_image width-400 %}
+        {% endif %}
+
+        <div class="intro"><p>{{ self.intro }}</p></div>
+
+        {% for block in self.body %}
+            {% if block.block_type == 'heading' %}
+                <h3>{{ block.value }}</h3>
+            {% elif block.block_type == 'codeblock' %}
+                <pre class='codeblock'>
+                    {{ block.value }}
+                </pre>
+            {% else %}
+                {{ block }}
+            {% endif %}
+        {% endfor %}
+        {% for tag in self.tags.all %}
+            <a class='tag' href="{{ self.home_page.url }}?tag={{ tag }}">{{ tag }}</a>
+        {% endfor %}
     </article>
     <!--{{ previous_blog.first.url }}-->
 {% endblock %}

@@ -208,10 +208,12 @@ class BlogPage(RoutablePageMixin, Page):
         """
         View function for the past events page
         """
+        site_root = self.get_parent()
         self.template = 'blog/blog_page_amp.html'
 
         return render(request, self.template, {
             'self': self,
+            'site_root': site_root,
         })
 
     # def serve(self, request):
