@@ -6,6 +6,7 @@ from wagtail.wagtailadmin import urls as wagtailadmin_urls
 from wagtail.wagtaildocs import urls as wagtaildocs_urls
 from wagtail.wagtailcore import urls as wagtail_urls
 from wagtail.contrib.wagtailsitemaps.views import sitemap
+from blog_feed.feeds import BlogsFeed
 
 
 
@@ -17,6 +18,7 @@ urlpatterns = [
 
     url(r'^search/$', 'search.views.search', name='search'),
     url('^sitemap\.xml$', sitemap),
+    url(r'amp-feed/$', BlogsFeed()),
     url(r'', include(wagtail_urls)),
 ]
 

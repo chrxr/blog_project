@@ -53,6 +53,7 @@ INSTALLED_APPS = (
     'search',
     'home',
     'blog',
+    'blog_feed',
 )
 
 MIDDLEWARE_CLASSES = (

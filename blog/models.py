@@ -172,6 +172,9 @@ class BlogPage(RoutablePageMixin, Page):
         current_index = blogs.index(self)
         print(current_index)
 
+    def get_absolute_url(self):
+        return self.full_url
+
     @route(r'^$', name='normal_blog')
     def normal_blog(self, request):
         site_root = self.get_parent()
