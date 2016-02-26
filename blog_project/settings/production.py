@@ -32,7 +32,7 @@ CACHES = {
     'default': {
         'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
         'LOCATION': [
-            '178.62.52.27:11211',
+            '127.0.0.1:11211',
         ]
     }
 }
