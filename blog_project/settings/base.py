@@ -48,6 +48,8 @@ INSTALLED_APPS = (
     'wagtail.wagtailforms',
     'wagtail.contrib.wagtailsitemaps',
     'wagtail.contrib.wagtailsearchpromotions',
+    'wagalytics',
+    'wagtailfontawesome',
     'search',
     'home',
     'blog',
@@ -149,3 +151,8 @@ WAGTAILSEARCH_BACKENDS = {
         'BACKEND': 'wagtail.wagtailsearch.backends.db',
     }
 }
+
+try:
+    from .local import *
+except ImportError:
+    pass
