@@ -1,6 +1,7 @@
 from django.db import models
 
 from django.utils.safestring import mark_safe
+from django.template.response import TemplateResponse
 from markdown import markdown
 from pygments import highlight
 from pygments.formatters import get_formatter_by_name
@@ -177,46 +178,23 @@ class BlogPage(RoutablePageMixin, Page):
     @route(r'^$', name='normal_blog')
     def normal_blog(self, request):
         site_root = self.get_parent()
-        # blogs = BlogPage.objects.filter(live=True).order_by('-date')
-        # blog_list = []
-        # next_blog = ''
-        # previous_blog = ''
-        # show_nav = True
-        # for blog in blogs:
-        #     blog_list.append(blog.id)
-        # if self.id:
-        #     current_index = blog_list.index(self.id)
-        #     if current_index > 0:
-        #         previous_index = current_index - 1
-        #     next_index = current_index + 1
-        #     try:
-        #         next_blog = BlogPage.objects.filter(id = blog_list[next_index])
-        #     except:
-        #         next_blog = '/'
-        #     try:
-        #         previous_blog = BlogPage.objects.filter(id = blog_list[previous_index])
-        #     except:
-        #         previous_blog = '/'
+
         return render(request, self.template, {
             'self': self,
             'site_root': site_root,
-            # 'next_blog': next_blog,
-            # 'previous_blog': previous_blog,
-            # 'show_nav': show_nav,
         })
 
     @route(r'^amp/$', name='amp_blog')
     def amp_blog(self,request):
-        """
-        View function for the past events page
-        """
         site_root = self.get_parent()
-        self.template = 'blog/blog_page_amp.html'
+        # self.template = 'blog/blog_page_amp.html'
+        context = self.get_context(request)
+        context['is_amp'] = 'True'
+        context['base_template'] = 'base_amp.html'
+        context['site_root'] = site_root
 
-        return render(request, self.template, {
-            'self': self,
-            'site_root': site_root,
-        })
+        response = TemplateResponse(request, self.template, context)
+        return response
 
 class LinkFields(models.Model):
     link_external = models.URLField("External link", blank=True)
