@@ -304,7 +304,7 @@ class BookmarkPage(Page):
         return render(request, self.template, {
             # 'show_nav': show_nav,
             'request_tag': request_tag,
-            'page': self,
+            'self': self,
             'bookmarks': bookmarks,
             'tags': tags,
         })

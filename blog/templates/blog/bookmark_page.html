@@ -5,19 +5,20 @@
 {% block body_class %}template-bookmarkpage{% endblock %}
 
 {% block content %}
-  <h1 class='blog-title'>{{ page.title }}</h1>
+  <h1 class='article-title'>{{ self.title }}</h1>
   <h3>Tags</h3>
+  <div class='bookmark-container'>
   {% if request_tag %}
-    <p>Selected tag: {{ request_tag }} - <a href='{{ page.url }}'>x</a></p>
+    <p>Selected tag: {{ request_tag }} - <a href='{{ self.url }}'>x</a></p>
   {% else %}
-    <ul class='tag_list'>
-      {% for tag in tags %}<li><a class='listing-links' href='{{ page.url }}?tag={{tag}}'>{{ tag }}</a></li>{% endfor %}
+
+    <ul class='bookmarks tag-list'>
+      {% for tag in tags %}<li><a class='bookmarks listing-links' href='{{ self.url }}?tag={{tag}}'>{{ tag }}</a></li>{% endfor %}
     </ul>
   {% endif %}
-  <hr />
-
+  </div>
   {% for bookmark in bookmarks %}
-    <h2><a class='listing-links'  href='{{ bookmark.url}}'>{{ bookmark.title }}</a></h2>
+    <h2><a class='bookmarks listing-links'  href='{{ bookmark.url}}'>{{ bookmark.title }}</a></h2>
     <p>{{ bookmark.notes | richtext }}</p>
   {% endfor %}
 {% endblock %}

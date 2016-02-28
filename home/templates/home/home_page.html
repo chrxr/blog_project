@@ -5,7 +5,7 @@
 {% block body_class %}template-{{ self.get_verbose_name|slugify }}{% endblock %}
 
 {% block content %}
-	<h1 class="main-title"><a href='/'>{{ self.title }}</a></h1>
+	<h1 class="article-title homepage-title"><a href='/'>{{ self.title }}</a></h1>
 	{% for blog in blogs.all %}
 		<a class='listing-links' href='{% pageurl blog.specific %}'>
 		<h2>{{ blog.title }}</h2>

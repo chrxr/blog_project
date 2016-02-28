@@ -18,7 +18,7 @@
           {% image self.main_image width-400 %}
         {% endif %}
 
-        <div class="intro"><p>{{ self.intro }}</p></div>
+        <div class="article-intro"><p>{{ self.intro }}</p></div>
 
         {% for block in self.body %}
             {% if block.block_type == 'heading' %}
