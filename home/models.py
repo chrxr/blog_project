@@ -8,10 +8,10 @@ from blog.models import BlogPage
 
 
 class HomePage(Page):
-    body = RichTextField(blank=True)
+    subtitle = models.CharField(max_length=255, null=True, blank=True)
 
     content_panels = Page.content_panels + [
-        FieldPanel('body')
+        FieldPanel('subtitle')
     ]
 
     def serve(self, request):
