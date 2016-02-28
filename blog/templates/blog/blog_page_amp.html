@@ -28,7 +28,7 @@
                     {{ block.value }}
                 </pre>
             {% elif block.block_type == 'image' %}
-                {% image block.value fill-80x80 as theimage %}
+                {% image block.value original as theimage %}
                 <amp-img src="{{ theimage.url }}" alt="THIS IS THE ALT" width="{{ theimage.width }}" height="{{ theimage.height }}" layout="responsive"></amp-img>
             {% else %}
                 {{ block }}
