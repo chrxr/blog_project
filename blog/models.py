@@ -170,7 +170,6 @@ class BlogPage(RoutablePageMixin, Page):
     def next_blog(self):
         blogs = BlogPage.objects.filter(live=True).order_by('-date')
         current_index = blogs.index(self)
-        print(current_index)
 
     def get_absolute_url(self):
         return self.full_url
@@ -178,32 +177,32 @@ class BlogPage(RoutablePageMixin, Page):
     @route(r'^$', name='normal_blog')
     def normal_blog(self, request):
         site_root = self.get_parent()
-        blogs = BlogPage.objects.filter(live=True).order_by('-date')
-        blog_list = []
-        next_blog = ''
-        previous_blog = ''
-        show_nav = True
-        for blog in blogs:
-            blog_list.append(blog.id)
-        if self.id:
-            current_index = blog_list.index(self.id)
-            if current_index > 0:
-                previous_index = current_index - 1
-            next_index = current_index + 1
-            try:
-                next_blog = BlogPage.objects.filter(id = blog_list[next_index])
-            except:
-                next_blog = '/'
-            try:
-                previous_blog = BlogPage.objects.filter(id = blog_list[previous_index])
-            except:
-                previous_blog = '/'
+        # blogs = BlogPage.objects.filter(live=True).order_by('-date')
+        # blog_list = []
+        # next_blog = ''
+        # previous_blog = ''
+        # show_nav = True
+        # for blog in blogs:
+        #     blog_list.append(blog.id)
+        # if self.id:
+        #     current_index = blog_list.index(self.id)
+        #     if current_index > 0:
+        #         previous_index = current_index - 1
+        #     next_index = current_index + 1
+        #     try:
+        #         next_blog = BlogPage.objects.filter(id = blog_list[next_index])
+        #     except:
+        #         next_blog = '/'
+        #     try:
+        #         previous_blog = BlogPage.objects.filter(id = blog_list[previous_index])
+        #     except:
+        #         previous_blog = '/'
         return render(request, self.template, {
             'self': self,
             'site_root': site_root,
-            'next_blog': next_blog,
-            'previous_blog': previous_blog,
-            'show_nav': show_nav,
+            # 'next_blog': next_blog,
+            # 'previous_blog': previous_blog,
+            # 'show_nav': show_nav,
         })
 
     @route(r'^amp/$', name='amp_blog')
