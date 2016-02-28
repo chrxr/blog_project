@@ -33,3 +33,12 @@ body {
 	width:100%;
 
 }
+
+.blog-title {
+	font-size:1.75em;
+}
+
+.header {
+	text-align: left;
+	padding-left:10px;
+}

@@ -1,3 +1,10 @@
+
+
+<div class="header">
+{% if self.url != '/' %}
+  <h2 class="header-title"><a href="/">chrxr.com</a></h2>
+{% endif %}
+</div>
 <div class="search">
     <form action="{% url 'search' %}" method="get">
         <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>

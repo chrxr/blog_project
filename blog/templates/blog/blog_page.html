@@ -9,7 +9,6 @@
 {% block body_class %}template-blogpage{% endblock %}
 
 {% block content %}
-    <article class='content-container'>
         <h1 class='blog-title'>{{ self.title }}</h1>
         {% if self.subtitle %}
             <h3 class='subtitle'>{{ self.subtitle }}</h3>
@@ -38,6 +37,5 @@
         {% for tag in self.tags.all %}
             <a class='tag' href="{{ self.home_page.url }}?tag={{ tag }}">{{ tag }}</a>
         {% endfor %}
-    </article>
     <!--{{ previous_blog.first.url }}-->
 {% endblock %}
