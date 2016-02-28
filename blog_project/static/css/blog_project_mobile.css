@@ -42,3 +42,10 @@ body {
 	text-align: left;
 	padding-left:10px;
 }
+
+.search {
+	position: relative;
+	float: left;
+	display: inline-block;
+	margin-left: 10px;
+}
