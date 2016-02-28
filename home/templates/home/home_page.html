@@ -5,7 +5,6 @@
 {% block body_class %}template-{{ self.get_verbose_name|slugify }}{% endblock %}
 
 {% block content %}
-    <article class='content-container'>
 	<h1 class="main-title"><a href='/'>{{ self.title }}</a></h1>
 	{% for blog in blogs.all %}
 		<a class='listing-links' href='{% pageurl blog.specific %}'>
@@ -17,6 +16,5 @@
 		</a>
 		<hr />
 	{% endfor %}
-	</article>
 	<!-- {{site.root}} -->
 {% endblock %}
