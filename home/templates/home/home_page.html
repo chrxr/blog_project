@@ -7,7 +7,7 @@
 {% block content %}
 	<h1 class="article-title homepage-title"><a href='/'>{{ self.title }}</a></h1>
 	{% if self.subtitle %}
-      <h3 class='article-subtitle'>{{ self.subtitle }}</h3>
+  <h3 class='article-subtitle homepage-subtitle'>{{ self.subtitle }}</h3>
   {% endif %}
 	{% for blog in blogs.all %}
 		<a class='listing-links' href='{% pageurl blog.specific %}'>

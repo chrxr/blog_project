@@ -89,6 +89,10 @@ p {
 	font-weight:normal;
 }
 
+.article-subtitle.homepage-subtitle {
+	margin-bottom:1.5em;
+}
+
 .article-intro {
 	font-weight: bold;
 }
