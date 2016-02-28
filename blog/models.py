@@ -189,7 +189,7 @@ class BlogPage(RoutablePageMixin, Page):
         site_root = self.get_parent()
         # self.template = 'blog/blog_page_amp.html'
         context = self.get_context(request)
-        context['is_amp'] = 'True'
+        context['is_amp'] = True
         context['base_template'] = 'base_amp.html'
         context['site_root'] = site_root
 
