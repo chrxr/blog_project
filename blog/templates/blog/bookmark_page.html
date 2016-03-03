@@ -24,7 +24,9 @@
   {% endif %}
   </div>
   {% for bookmark in bookmarks %}
+  <div class='link-container bookmark-link-container'>
     <h2><a class='bookmarks listing-links'  href='{{ bookmark.url}}'>{{ bookmark.title }}</a></h2>
-    <p>{{ bookmark.notes | richtext }}</p>
+    {% if bookmark.notes %}{{ bookmark.notes | richtext }}{% endif %}
+  </div>
   {% endfor %}
 {% endblock %}

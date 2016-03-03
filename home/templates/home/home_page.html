@@ -10,6 +10,7 @@
   <h3 class='article-subtitle homepage-subtitle'>{{ self.subtitle }}</h3>
   {% endif %}
 	{% for blog in blogs.all %}
+	<div class='link-container homepage-link-container'>
 		<a class='listing-links' href='{% pageurl blog.specific %}'>
 		<h2>{{ blog.title }}</h2>
 		 <p class="meta">{{ blog.date }}</p>
@@ -17,7 +18,8 @@
 			{{ blog.listing_intro|richtext}}
 		{% endif %}
 		</a>
-		<hr />
+	</div>
+		
 	{% endfor %}
 	<!-- {{site.root}} -->
 {% endblock %}

@@ -179,6 +179,21 @@ p {
   border-bottom: 1px solid black;
 }
 
+.link-container {
+	border-bottom: 1px solid #333333;
+	padding-top: 0.5em;
+	padding-bottom: 0.5em;
+}
+
+.link-container.bookmark-link-container {
+	padding-bottom: 0;
+}
+
+.link-container.bookmark-link-container > h2 {
+	font-size:1.25em;
+	margin-bottom:0.25em;
+}
+
 .tag-list {
 	list-style-type: none;
 	margin-left:0;

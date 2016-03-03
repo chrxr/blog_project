@@ -11,3 +11,4 @@ Vagrantfile.local
 /node_modules
 /.sass-cache
 *.log
+*.json
