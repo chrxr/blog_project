@@ -4,6 +4,10 @@
 
 {% block body_class %}template-bookmarkpage{% endblock %}
 
+{% block additional_meta %}
+  <link rel="canonical" href="/{{ self.slug }}" />
+{% endblock %}
+
 {% block content %}
   <h1 class='article-title'>{{ self.title }}</h1>
   <!-- <h3>Tags</h3> -->
