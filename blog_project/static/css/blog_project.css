@@ -40,6 +40,7 @@ p {
 	right:0;
 	padding-top:5px;
 	padding-right:10px;
+	text-align: left;
 }
 
 .header-title {
@@ -48,13 +49,26 @@ p {
 	padding: 0;
 }
 
-.header-title a {
+#header a {
 	text-decoration: none;
 	color:grey;
 }
 
-.header-title a:hover {
+#header a:hover {
 	color:#903;
+}
+
+.header-bookmarks {
+	position:relative;
+	top:5px;
+	left:0;
+	padding-top:5px;
+}
+
+.header-bookmarks h3 {
+	margin:0;
+	padding:0;
+	font-size:0.8em;
 }
 
 #content-container {

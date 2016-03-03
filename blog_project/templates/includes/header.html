@@ -1,13 +1,15 @@
-
-
 <div id="header">
 {% if self.url != '/' %}
   <h2 class="header-title"><a href="/">chrxr.com</a></h2>
 {% endif %}
-<div class="header-search">
-    <form action="{% url 'search' %}" method="get">
-        <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
-        <input type="submit" value="Search">
-    </form>
-</div>
+  <div class="header-search">
+      <form action="{% url 'search' %}" method="get">
+          <input type="text" name="query"{% if search_query %} value="{{ search_query }}"{% endif %}>
+          <input type="submit" value="Search">
+      </form>
+  {% if self.slug != "bookmarks" %}
+  <div class="header-bookmarks"><h3><a href='/bookmarks'>My bookmarks</a></h3></div>
+  {% endif %}
+  </div>
+
 </div>

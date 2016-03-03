@@ -21,6 +21,11 @@ body {
 	display: block;
 }
 
+.header-bookmarks {
+	position: relative;
+	display: block;
+}
+
 /* TYPOGRAPHY */
 
 .article-title {
