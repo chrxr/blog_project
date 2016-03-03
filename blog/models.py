@@ -256,7 +256,7 @@ class BookmarkPage(Page):
         if request.method == 'GET':
             request_tag = request.GET.get('tag', False)
             if request_tag:
-                bookmarks = Bookmark.objects.filter(tags__name__contains=request_tag).order_by('-date_read')
+                bookmarks = Bookmark.objects.filter(tags__name__contains=request_tag).order_by('date_read')
             else:
                 bookmarks = Bookmark.objects.all()
         else:
