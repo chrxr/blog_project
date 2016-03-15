@@ -19,6 +19,5 @@ def deploy_production(branch="master"):
         sudo("service uwsgi restart")
 
 
-
 def deploy():
     execute(deploy_production)
