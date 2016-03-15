@@ -1,0 +1,42 @@
+---
+- hosts: chrxr.com
+  # vars:
+  #   PROJECT_HOME: "~/blog_project"
+  #   ansible_python_interpreter: "~/Env/blog_project/bin/python"
+  remote_user: chrxr
+
+  tasks:
+  # - name: "Guard code, so we are more certain we are in a virtualenv"
+  #   shell: echo $VIRTUAL_ENV
+  #   register: command_result
+  #   failed_when: command_result.stdout == ""
+
+  # - name: start vm
+  #   sudo_user: chrxr
+  #   script: script.sh arg1
+  #   args:
+  #     chdir: ~/blog_project
+
+  # - name: Pull new files, git
+  #   git: repo=git@github.com:chrxr/blog_project.git
+  #     dest=~/blog_project
+  #     update=yes
+
+  # - name: navigate to blog_project
+  #   command: ./manage.py arg1
+  #   args:
+  #     chdir: ~/blog_project
+
+  - name: restart uwsgi
+    service: name=uwsgi state=restarted
+    become: yes
+    become_method: sudo
+
+  - name: restart nginx
+    service: name=nginx state=restarted
+    become: yes
+    become_method: sudo
+
+  # handlers:
+  #   - name: restart apache
+  #     service: name=httpd state=restarted
