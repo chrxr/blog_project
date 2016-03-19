@@ -50,6 +50,8 @@ INSTALLED_APPS = (
     'wagtail.contrib.wagtailsearchpromotions',
     'wagalytics',
     'wagtailfontawesome',
+    'django_medusa',
+    'wagtail.contrib.wagtailmedusa',
     'search',
     'home',
     'blog',
@@ -152,6 +154,12 @@ WAGTAILSEARCH_BACKENDS = {
         'BACKEND': 'wagtail.wagtailsearch.backends.db',
     }
 }
+
+# Static site generator settings
+
+MEDUSA_RENDERER_CLASS = 'django_medusa.renderers.DiskStaticSiteRenderer'
+MEDUSA_DEPLOY_DIR = os.path.join(BASE_DIR, 'build')
+SENDFILE_BACKEND = 'sendfile.backends.simple'
 
 try:
     from .local import *
