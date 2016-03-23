@@ -35,7 +35,3 @@ class BlogsFeed(Feed):
 
     def item_description(self, item):
         return item.intro
-
-    def item_link(self, item):
-        base_url = item.get_absolute_url()
-        return base_url

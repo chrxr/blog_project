@@ -1,3 +1,4 @@
+#!/usr/local/opt/python/bin/python2.7
 ---
 - hosts: chrxr.com
   # vars:
@@ -17,10 +18,11 @@
   #   args:
   #     chdir: ~/blog_project
 
-  # - name: Pull new files, git
-  #   git: repo=git@github.com:chrxr/blog_project.git
-  #     dest=~/blog_project
-  #     update=yes
+  - name: Pull new files, git
+    git: repo=git@github.com:chrxr/blog_project.git
+      dest=~/blog_project
+      update=yes
+      force=yes
 
   # - name: navigate to blog_project
   #   command: ./manage.py arg1
