@@ -50,8 +50,6 @@ INSTALLED_APPS = (
     'wagtail.contrib.wagtailsearchpromotions',
     'wagalytics',
     'wagtailfontawesome',
-    'django_medusa',
-    'wagtail.contrib.wagtailmedusa',
     'search',
     'home',
     'blog',
