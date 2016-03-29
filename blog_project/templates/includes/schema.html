@@ -1,0 +1,11 @@
+<script type="application/ld+json">
+{
+  "@context": "http://schema.org",
+  "@type": {% if self.url == '/' %}"Blog"{% else %}"blogPost"{% endif %},
+  "author": "Chris Rogers",
+  "url": "{{ self.full_url }}",
+  "name": "{{ self.title }}",
+  {% if self.date %}"datePublished": "{{ self.date }}",{% endif %}
+  "inLanguage": "en-UK",
+}
+</script>
