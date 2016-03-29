@@ -2,10 +2,17 @@
 {
   "@context": "http://schema.org",
   "@type": {% if self.url == '/' %}"Blog"{% else %}"blogPost"{% endif %},
-  "author": "Chris Rogers",
-  "url": "{{ self.full_url }}",
-  "name": "{{ self.title }}",
+  "headline": "{{ self.title }}",
+  "mainEntityOfPage":{
+    "@type":"WebPage",
+    "@id":"{{ self.full_url }}"
+  },
+  "author": {
+    "@type": "Person",
+    "name": "Chris Rogers",
+  },
   {% if self.date %}"datePublished": "{{ self.date }}",{% endif %}
-  "inLanguage": "en-UK",
+  {% if self.search_description %}"description": "{{ self.search_description }}",{% endif %}
+  "inLanguage": "en-GB",
 }
 </script>
