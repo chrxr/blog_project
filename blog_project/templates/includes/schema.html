@@ -11,7 +11,7 @@
     "@type": "Person",
     "name": "Chris Rogers",
   },
-  {% if self.date %}"datePublished": "{{ self.date }}",{% endif %}
+  {% if self.date %}"datePublished": "{{ self.date|date:"c" }}",{% endif %}
   {% if self.search_description %}"description": "{{ self.search_description }}",{% endif %}
   "inLanguage": "en-GB",
 }
