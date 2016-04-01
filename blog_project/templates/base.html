@@ -40,12 +40,12 @@
 
     <body class="{% block body_class %}{% endblock %}">
         {% wagtailuserbar %}
-        <!--{% include "includes/footer.html" %}-->
+
         {% include "includes/header.html" %}
         <section id='content-container'>
         {% block content %}{% endblock %}
         </section>
-
+        {% include "includes/footer.html" %}
 
         {# Global javascript #}
         <!-- <script src="//code.jquery.com/jquery-1.11.3.min.js"></script> -->

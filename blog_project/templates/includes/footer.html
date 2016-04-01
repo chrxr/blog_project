@@ -1,26 +1,10 @@
 {% load static wagtailcore_tags wagtailimages_tags static %}
-<section class='footer'>
+<section id='footer'>
 	<div id='footer-container' class='footer-container'>
-	{% if show_nav %}
-		{% if previous_blog != '' and next_blog != '' %}
-		<div class='item'>
-			{% if self.url != '/' %}
-			<a href='{% if previous_blog == '/' %}/{% else %} {% pageurl previous_blog.first %} {% endif %}'>
-			<i class="nav-arrow fa fa-arrow-left"></i>
-			</a>
-			{% endif %}
-		</div>
-		<div class='item item-middle'>
-			<h3 class='site-title'><a href='/'>chrxr.com</a></h3>
-		</div>
-		<div class='item'>
-			{% if self.url != '/' %}
-			<a href='{% if next_blog == '/' %}/{% else %} {% pageurl next_blog.first %} {% endif %}'>
-			<i class="nav-arrow fa fa-arrow-right"></i>
-			</a>
-			{% endif %}
-		</div>
-		{% endif %}
-	{% endif %}
+		<ul class='inline-list'>
+			<li><a href='/chris-rogers/'><p>About me</p></a></li>
+			<li><a href='http://twitter.com/chrxr'><p>Twitter</p></a></li>
+			<li><a href='http://github.com/chrxr'><p>Github</p></a></li>
+		</ul>
 	</div>
 </section>

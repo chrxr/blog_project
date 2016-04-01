@@ -79,6 +79,13 @@ p {
 	margin-bottom:50px;
 }
 
+#footer {
+	width:80%;
+	max-width:750px;
+	margin-left:auto;
+	margin-right:auto;
+}
+
 /* TYPOGRAPHY */
 
 .article-title {
@@ -128,6 +135,26 @@ p {
 .listing-links .meta {
 	font-style:italic;
 	line-height: 1em;
+}
+
+.inline-list {
+	list-style-type: none;
+	margin:0;
+	padding:0;
+}
+
+.inline-list li {
+	display:inline-block;
+	margin-right:1em;
+}
+
+.inline-list a {
+	color:grey;
+	font-size:0.8em;
+}
+
+.inline-list a:hover {
+	color:#903;
 }
 
 /* STREAMFIELD BLOCK STYLES */
