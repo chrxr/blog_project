@@ -1,0 +1,32 @@
+MAP TEST:
+
+git clone git@github.com:chrxr/maptest.git
+mkvirtualenv maptest
+cd maptest
+workon maptest
+pip install -r requirements.txt
+
+sudo apt-get install redis
+
+BLOG PROJECT:
+
+git clone git@github.com:chrxr/blog_project.git
+mkvirtualenv blog_project
+cd blog_project
+workon blog_project
+pip install -r requirements.txt
+
+
+nginx:
+
+rm /etc/nginx/sites-enabled/default
+
+mv ~/blog_project/deploy_stuff/nginx/blog_project /etc/nginx/sites-available/
+mv ~/blog_project/deploy_stuff/nginx/nginx.conf /etc/nginx/
+
+ln -s /etc/nginx/sites-available/blog_project /etc/nginx/sites-enabled/
+
+uwsgi:
+
+mv ~/blog_project/deploy_stuff/uwsgi/firstsite.ini /etc/uwsgi/sites/
+mv ~/blog_project/deploy_stuff/uwsgi/maptest.ini /etc/uwsgi/sites/

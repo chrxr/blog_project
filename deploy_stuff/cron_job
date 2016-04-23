@@ -1,0 +1,1 @@
+01 13 * * * /bin/bash /home/chrxr/blog_project/backup.sh
