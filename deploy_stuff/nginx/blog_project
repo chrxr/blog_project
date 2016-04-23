@@ -1,9 +1,9 @@
 server {
     listen 443 ssl;
     server_name chrxr.com www.chrxr.com;
-	
-	ssl_certificate /etc/letsencrypt/live/www.chrxr.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/www.chrxr.com/privkey.pem;
+
+	ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
 
 	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
     ssl_prefer_server_ciphers on;
@@ -17,7 +17,7 @@ server {
         root /home/chrxr/blog_project;
     }
     location /media/ {
-        root /home/chrxr/blog_project;  
+        root /home/chrxr/blog_project;
     }
     location /runmap {
         include         uwsgi_params;

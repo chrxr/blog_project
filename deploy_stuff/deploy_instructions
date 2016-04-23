@@ -1,3 +1,30 @@
+General:
+
+sudo apt-get update
+sudo apt-get install git
+sudo apt-get install python-pip
+sudo apt-get install libpq-dev python-dev
+sudo apt-get install postgresql postgresql-contrib
+sudo pip install virtualenv virtualenvwrapper
+
+pip install -r requirements.txt
+
+sudo su postgres
+createdb blog_project
+
+[alter password for postgres user (or remove password from db...) ]
+
+cd deploy_stuff/backups
+
+sudo su postgres
+
+psql blog_project < backup-Apr-19-16.sql (change this to generic name)
+
+echo "export WORKON_HOME=~/Env" >> ~/.bashrc
+echo "source /usr/local/bin/virtualenvwrapper.sh" >> ~/.bashrc
+source ~/.bashrc
+
+
 MAP TEST:
 
 git clone git@github.com:chrxr/maptest.git
@@ -22,6 +49,7 @@ nginx:
 rm /etc/nginx/sites-enabled/default
 
 mv ~/blog_project/deploy_stuff/nginx/blog_project /etc/nginx/sites-available/
+mv /etc/nginx/nginx.conf /etc/nginx/nginx.conf.old
 mv ~/blog_project/deploy_stuff/nginx/nginx.conf /etc/nginx/
 
 ln -s /etc/nginx/sites-available/blog_project /etc/nginx/sites-enabled/
