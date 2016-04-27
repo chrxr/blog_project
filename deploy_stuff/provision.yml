@@ -1,0 +1,146 @@
+
+# assumes Ubuntu 14.04 LTS
+
+- hosts: all
+  sudo: yes
+  vars:
+      django_dir: "/home/vagrant"
+      runmap:
+
+  tasks:
+
+    - name: apt upgrade and update
+      apt: update_cache=yes
+      apt: upgrade=full
+
+    - name: install git
+      apt: name=git state=latest
+
+    - name: install standard servers
+      apt: pkg={{item}} state=latest
+      with_items:
+        - postgresql-9.3
+        - postgresql-server-dev-9.3
+        - postgresql-9.3-postgis-2.1
+        - nginx
+        - redis-server
+
+    - name: install common packages for python application development
+      apt: pkg={{item}} state=latest
+      with_items:
+        - python-dev
+        - python-pip
+        - python-psycopg2
+
+    - name: make sure servers are running
+      service: name={{item}} state=started
+      with_items:
+        - postgresql
+        - nginx
+        - redis-server
+
+    - name: clone runmap github repo
+      git: repo=git@github.com:chrxr/maptest.git
+        dest="{{ django_dir }}/maptest"
+        accept_hostkey=True
+        update=yes
+
+    - name: clone blog github repo
+      git: repo=git@github.com:chrxr/blog_project.git
+        dest="{{ django_dir }}/blog_project"
+        accept_hostkey=True
+        update=yes
+
+    - name: add chrxr user
+      user: name=chrxr password='SoZ53/zNdwLwI'
+
+##### NEED TO ADD IN USER ROLES
+
+
+
+  #   - name: copy postgresql access config
+  #     template: src=pg_hba.conf dest=/etc/postgresql/9.3/main/pg_hba.conf
+  #     notify:
+  #         - reload postgresql
+  #
+  #   - name: copy nginx config
+  #     template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
+  #     notify:
+  #         - reload nginx
+  #
+  #   - name: copy blog_project config
+  #     template: src=nginx/blog_project dest=/etc/nginx/sites-availble/blog_project
+  #     notify:
+  #         - reload nginx
+  # #
+  #   - name: ensure uwsgi directory exists
+  #     action: file path=/etc/uwsgi/sites state=directory
+  #
+  #   - name: ensure uwsgi log directory exists
+  #     action: file path=/var/log/uwsgi state=directory
+  # #
+  #   - name: copy uwsgi config
+  #     template: src=uwsgi/maptest.ini dest=/etc/uwsgi/sites/maptest.ini
+  #
+  #   - name: copy uwsgi config
+  #     template: src=uwsgi/firstsite.ini dest=/etc/uwsgi/sites/firstsite.ini
+  # #
+  #   - name: copy uwsgi startup script
+  #     template: src=uwsgi.conf dest=/etc/init/uwsgi.conf
+  #
+  #   - name: ensure correct permissions on uwsgi script
+  #     file: path=/etc/init.d/uwsgi mode=755
+  #
+    - name: ensure database is created
+      sudo_user: postgres
+      action: postgresql_db db=blog_project
+         encoding='UTF-8'
+      notify:
+          - reload postgresql
+  #
+  #   - name: create djangoapps group
+  #     group: name=djangoapps gid=1000 system=no
+  #
+  #   - name: create routique user
+  #     user: name=routique group=djangoapps shell=/bin/bash uid=1000
+  #
+    - name: install routique python dependencies
+      pip: requirements={{ django_dir }}/blog_project/requirements.txt
+  #
+  #   - name: install uwsgi
+  #     pip: name=uwsgi
+  #
+  #   - name: ensure uswgi starts at boot
+  #     command: update-rc.d uwsgi defaults
+  #
+  #   - name: make sure uwsgi is running
+  #     service: name=uwsgi state=started
+  #
+  #   - django_manage: command=collectstatic
+  #       app_path={{ django_dir }}
+  #
+  #   - django_manage: command=syncdb
+  #       app_path={{ django_dir }}
+  #       settings=routique.settings
+  #
+  #   - django_manage: command=migrate
+  #       app_path={{ django_dir }}
+  #       settings=routique.settings
+  #
+  #   - name: restart uwsgi
+  #     service: name=uwsgi state=restarted
+  #
+  # handlers:
+  #   - name: install postgis
+  #     sudo_user: postgres
+  #     action: command psql -d routique -c "CREATE EXTENSION postgis;"
+  #
+  #   - name: convert database to postgis topology
+  #     sudo_user: postgres
+  #     action: command psql -d routique -c "CREATE EXTENSION postgis_topology;"
+  #
+  #   - name: reload postgresql
+  #     service: name=postgresql state=reloaded
+  #
+  #   - name: reload nginx
+  #     service: name=postgresql state=restarted
