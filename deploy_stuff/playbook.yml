@@ -1,0 +1,186 @@
+
+# assumes Ubuntu 14.04 LTS
+
+- hosts: all
+  sudo: yes
+  vars:
+      django_dir: "/home/chrxr"
+
+  tasks:
+
+    - name: apt upgrade and update
+      apt: update_cache=yes upgrade=dist
+
+    - name: install git
+      apt: name=git state=latest
+
+    - name: install standard servers
+      apt: pkg={{item}} state=latest
+      with_items:
+        - postgresql-9.3
+        - postgresql-server-dev-9.3
+        - postgresql-9.3-postgis-2.1
+        - nginx
+        - redis-server
+
+    - name: install common packages for python application development
+      apt: pkg={{item}} state=latest
+      with_items:
+        - python-dev
+        - python-pip
+        - python-psycopg2
+        - python-virtualenv
+        - libxml2-dev
+        - libxslt1-dev
+
+### FIREWALL STUFF
+
+    - name: install security packages
+      apt: pkg={{item}} state=latest
+      with_items:
+        - iptables-persistent
+
+    - name: copy iptablesv4 rules
+      template: src=iptables/iptables4 dest=/etc/iptables/rules.v4
+
+    - name: check iptablesv4 is valid
+      command: sudo iptables-restore -t /etc/iptables/rules.v4
+
+    - name: copy iptablesv6 rules
+      template: src=iptables/iptables6 dest=/etc/iptables/rules.v6
+
+    - name: check iptablesv6 is valid
+      command: sudo iptables-restore -t /etc/iptables/rules.v6
+
+    - name: Reload iptables
+      command: sudo service iptables-persistent reload
+
+#### END FIREWALL STUFF
+
+    - name: make sure servers are running
+      service: name={{item}} state=started
+      with_items:
+        - postgresql
+        - nginx
+        - redis-server
+
+    - name: add chrxr user
+      user: name=chrxr password='SoZ53/zNdwLwI'
+
+    - name: clone runmap github repo
+      git: repo=git@github.com:chrxr/maptest.git
+        dest="{{ django_dir }}/maptest"
+        accept_hostkey=True
+        update=yes
+
+    - name: clone blog github repo
+      git: repo=git@github.com:chrxr/blog_project.git
+        dest="{{ django_dir }}/blog_project"
+        accept_hostkey=True
+        update=yes
+
+    - name: copy postgresql access config
+      template: src=pg_hba.conf dest=/etc/postgresql/9.3/main/pg_hba.conf
+      notify:
+          - reload postgresql
+
+    - name: Make sure postgres config has been taken on
+      meta: flush_handlers
+  #
+    - name: copy nginx config
+      template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
+      notify:
+          - reload nginx
+
+    - name: remove standard default nginx site file
+      action: file path=/etc/nginx/sites-enabled/default state=absent
+
+    - name: copy blog_project config
+      template: src=nginx/blog_project dest=/etc/nginx/sites-available/blog_project
+      notify:
+          - reload nginx
+
+    - name: create symoblic links from available to enabled
+      file: src=/etc/nginx/sites-available/blog_project dest=/etc/nginx/sites-enabled/blog_project owner=www-data group=www-data state=link
+
+  # #
+    - name: ensure uwsgi directory exists
+      action: file path=/etc/uwsgi/sites state=directory
+  #
+    - name: ensure uwsgi log directory exists
+      action: file path=/var/log/uwsgi state=directory
+  # #
+    - name: copy uwsgi config
+      template: src=uwsgi/maptest.ini dest=/etc/uwsgi/sites/maptest.ini
+
+    - name: copy uwsgi config
+      template: src=uwsgi/firstsite.ini dest=/etc/uwsgi/sites/firstsite.ini
+  # #
+    - name: copy uwsgi startup script
+      template: src=uwsgi/uwsgi.conf dest=/etc/init/uwsgi.conf
+
+    - name: ensure database is created
+      sudo_user: postgres
+      action: postgresql_db db=blog_project
+         encoding='UTF-8'
+      notify:
+          - restore backup
+          - reload postgresql
+
+    - name: ensure db is backed up by flushing handlers
+      meta: flush_handlers
+
+    - name: add password to postgres user
+      postgresql_user: db=blog_project user=postgres password="postgres"
+  #   - name: create djangoapps group
+  #     group: name=djangoapps gid=1000 system=no
+  #
+  #   - name: create routique user
+  #     user: name=routique group=djangoapps shell=/bin/bash uid=1000
+    - name: Create Env directory
+      action: file path={{ django_dir }}/Env state=directory
+
+    - name: install blog_project python dependencies
+      pip: requirements={{ django_dir }}/blog_project/requirements.txt virtualenv={{ django_dir }}/Env/blog_project
+
+    - name: install runmap python dependencies
+      pip: requirements={{ django_dir }}/maptest/requirements.txt virtualenv={{ django_dir }}/Env/maptest
+
+    - name: Assign user as owner of home
+      command: chown -R chrxr:chrxr {{ django_dir}}
+
+    - name: install uwsgi
+      pip: name=uwsgi
+  #
+  #   - name: ensure uswgi starts at boot
+  #     command: update-rc.d uwsgi defaults
+  #
+    - name: make sure uwsgi is running
+      service: name=uwsgi state=started
+  #
+    - django_manage: command=collectstatic
+        app_path={{ django_dir }}/blog_project
+        virtualenv={{ django_dir }}/Env/blog_project
+
+  #   - django_manage: command=syncdb
+  #       app_path={{ django_dir }}
+  #       settings=routique.settings
+  #
+    - django_manage: command=migrate
+        app_path={{ django_dir }}/blog_project
+        settings=blog_project.settings
+        virtualenv={{ django_dir }}/Env/blog_project
+  #
+    - name: restart uwsgi
+      service: name=uwsgi state=restarted
+  #
+  handlers:
+    - name: restore backup
+      sudo_user: postgres
+      shell: psql blog_project < {{ django_dir }}/blog_project/deploy_stuff/backups/backup-Apr-19-16.sql
+
+    - name: reload postgresql
+      service: name=postgresql state=reloaded
+
+    - name: reload nginx
+      service: name=postgresql state=restarted
