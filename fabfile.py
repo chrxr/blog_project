@@ -3,7 +3,7 @@ from fabric.api import *
 from fabric.colors import red
 
 
-env.roledefs['production'] = ['chrxr@178.62.52.27']
+env.roledefs['production'] = ['chrxr@139.59.163.178']
 
 @roles('production')
 def deploy_production(branch="master"):

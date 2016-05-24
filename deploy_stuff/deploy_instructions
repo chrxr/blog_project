@@ -67,4 +67,4 @@ mv ~/blog_project/deploy_stuff/uwsgi/uwsgi.conf /etc/init/
 
 LETSENCRYPT:
 
-./letsencrypt-auto certonly -a webroot --webroot-path=/usr/share/nginx/html -d chrxr.com -d www.chrxr.com
+  ./letsencrypt-auto certonly -a webroot --webroot-path=/usr/share/nginx/html -d chrxr.com -d www.chrxr.com

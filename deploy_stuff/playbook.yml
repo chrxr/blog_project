@@ -1,7 +1,7 @@
 
 # assumes Ubuntu 14.04 LTS
 
-- hosts: all
+- hosts: chrxr
   sudo: yes
   vars:
       django_dir: "/home/chrxr"
@@ -65,7 +65,7 @@
         - redis-server
 
     - name: add chrxr user
-      user: name=chrxr password='SoZ53/zNdwLwI'
+      user: name=chrxr password='$6$a9KxfV6ClNcRJ1f5$wgx0HpgkCbnV68pfsS9RPKRyaoej7rMXWjmImDZKneMtTdalD0JvSW4fSmMR6ib8RggfTu9S5Mqb3E7IRIPy20' groups=sudo,www-data
 
     - name: clone runmap github repo
       git: repo=git@github.com:chrxr/maptest.git
