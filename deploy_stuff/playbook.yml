@@ -79,6 +79,12 @@
         accept_hostkey=True
         update=yes
 
+    - name: clone blog github repo
+      git: repo=git@github.com:chrxr/timesheets.git
+        dest="{{ django_dir }}/timesheets"
+        accept_hostkey=True
+        update=yes
+
     - name: copy postgresql access config
       template: src=pg_hba.conf dest=/etc/postgresql/9.3/main/pg_hba.conf
       notify:
@@ -110,21 +116,31 @@
     - name: ensure uwsgi log directory exists
       action: file path=/var/log/uwsgi state=directory
   # #
-    - name: copy uwsgi config
+    - name: copy maptest uwsgi config
       template: src=uwsgi/maptest.ini dest=/etc/uwsgi/sites/maptest.ini
 
-    - name: copy uwsgi config
+    - name: copy blog_project uwsgi config
       template: src=uwsgi/firstsite.ini dest=/etc/uwsgi/sites/firstsite.ini
-  # #
+
+    - name: copy timesheets uwsgi config
+      template: src=uwsgi/timesheets.ini dest=/etc/uwsgi/sites/timesheets.ini
+
     - name: copy uwsgi startup script
       template: src=uwsgi/uwsgi.conf dest=/etc/init/uwsgi.conf
 
-    - name: ensure database is created
+    - name: ensure blog_project database is created
       sudo_user: postgres
       action: postgresql_db db=blog_project
          encoding='UTF-8'
       notify:
           - restore backup
+          - reload postgresql
+
+    - name: ensure timesheets database is created
+      sudo_user: postgres
+      action: postgresql_db db=timesheets
+         encoding='UTF-8'
+      notify:
           - reload postgresql
 
     - name: ensure db is backed up by flushing handlers
@@ -146,31 +162,40 @@
     - name: install runmap python dependencies
       pip: requirements={{ django_dir }}/maptest/requirements.txt virtualenv={{ django_dir }}/Env/maptest
 
+    - name: install timesheets python dependencies
+      pip: requirements={{ django_dir }}/timesheets/requirements.txt virtualenv={{ django_dir }}/Env/timesheets
+
     - name: Assign user as owner of home
       command: chown -R chrxr:chrxr {{ django_dir}}
 
     - name: install uwsgi
       pip: name=uwsgi
-  #
-  #   - name: ensure uswgi starts at boot
-  #     command: update-rc.d uwsgi defaults
-  #
+
     - name: make sure uwsgi is running
       service: name=uwsgi state=started
-  #
+
+# DJANGO MANAGE FOR BLOG
+
     - django_manage: command=collectstatic
         app_path={{ django_dir }}/blog_project
         virtualenv={{ django_dir }}/Env/blog_project
 
-  #   - django_manage: command=syncdb
-  #       app_path={{ django_dir }}
-  #       settings=routique.settings
-  #
     - django_manage: command=migrate
         app_path={{ django_dir }}/blog_project
         settings=blog_project.settings
         virtualenv={{ django_dir }}/Env/blog_project
-  #
+
+# DJANGO MANAGE FOR TIMESHEETS
+
+    - django_manage: command=collectstatic
+        app_path={{ django_dir }}/timesheets
+        virtualenv={{ django_dir }}/Env/timesheets
+
+    - django_manage: command=migrate
+        app_path={{ django_dir }}/timesheets
+        settings=timesheets.settings
+        virtualenv={{ django_dir }}/Env/timesheets
+
     - name: restart uwsgi
       service: name=uwsgi state=restarted
   #
