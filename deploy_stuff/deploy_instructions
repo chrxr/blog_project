@@ -30,7 +30,7 @@ MAP TEST:
 git clone git@github.com:chrxr/maptest.git
 mkvirtualenv maptest
 cd maptest
-workon maptest
+apt-get install libxml2 libxml2-dev libxslt1-dev
 pip install -r requirements.txt
 
 sudo apt-get install redis
@@ -67,4 +67,9 @@ mv ~/blog_project/deploy_stuff/uwsgi/uwsgi.conf /etc/init/
 
 LETSENCRYPT:
 
-  ./letsencrypt-auto certonly -a webroot --webroot-path=/usr/share/nginx/html -d chrxr.com -d www.chrxr.com
+./letsencrypt-auto certonly -a webroot --webroot-path=/usr/share/nginx/html -d chrxr.com -d www.chrxr.com
+
+
+INSTALL REDIS:
+
+http://redis.io/topics/quickstart
