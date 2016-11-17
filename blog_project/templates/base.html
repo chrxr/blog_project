@@ -14,9 +14,11 @@
         <meta name="viewport" content="width=device-width, initial-scale=1" />
         {% block additional_meta %}
         {% endblock %}
-        {% if site_root %}
-        <link rel="amphtml" href="https://{{ site_root }}{{ self.url }}amp">
+        {% if self.url != '/' %}
+        <link rel="amphtml" href="{{ self.full_url }}amp">
         {% endif %}
+
+
         {# Global stylesheets #}
         <link rel="stylesheet" type="text/css" href="{% static 'css/blog_project.css' %}">
 
