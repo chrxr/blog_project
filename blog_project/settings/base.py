@@ -163,3 +163,8 @@ try:
     from .local import *
 except ImportError:
     pass
+
+# Wagalytics
+
+GA_KEY_FILEPATH = '/path/to/secure/directory/your-key.json'
+GA_VIEW_ID = 'ga:xxxxxxxx'
