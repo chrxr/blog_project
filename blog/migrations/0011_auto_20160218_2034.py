@@ -3,10 +3,10 @@ from __future__ import unicode_literals
 
 from django.db import models, migrations
 import blog.models
-import wagtail.wagtailimages.blocks
-import wagtail.wagtailcore.fields
+import wagtail.images.blocks
+import wagtail.core.fields
 import modelcluster.contrib.taggit
-import wagtail.wagtailcore.blocks
+import wagtail.core.blocks
 import modelcluster.fields
 
 
@@ -51,7 +51,7 @@ class Migration(migrations.Migration):
         migrations.AlterField(
             model_name='blogpage',
             name='body',
-            field=wagtail.wagtailcore.fields.StreamField((('heading', wagtail.wagtailcore.blocks.CharBlock(classname='full title', icon='title')), ('paragraph', wagtail.wagtailcore.blocks.RichTextBlock(icon='pilcrow')), ('image', wagtail.wagtailimages.blocks.ImageChooserBlock(icon='image')), ('codeblock', wagtail.wagtailcore.blocks.TextBlock(icon='cogs')), ('markdown', blog.models.MarkDownBlock()), ('real_codeblock', wagtail.wagtailcore.blocks.StructBlock((('language', wagtail.wagtailcore.blocks.ChoiceBlock(choices=[('bash', 'Bash/Shell'), ('css', 'CSS'), ('django', 'Django templating language'), ('html', 'HTML'), ('javascript', 'Javascript'), ('python', 'Python'), ('scss', 'SCSS')])), ('code', wagtail.wagtailcore.blocks.TextBlock()))))), blank=True, null=True),
+            field=wagtail.core.fields.StreamField((('heading', wagtail.core.blocks.CharBlock(classname='full title', icon='title')), ('paragraph', wagtail.core.blocks.RichTextBlock(icon='pilcrow')), ('image', wagtail.images.blocks.ImageChooserBlock(icon='image')), ('codeblock', wagtail.core.blocks.TextBlock(icon='cogs')), ('markdown', blog.models.MarkDownBlock()), ('real_codeblock', wagtail.core.blocks.StructBlock((('language', wagtail.core.blocks.ChoiceBlock(choices=[('bash', 'Bash/Shell'), ('css', 'CSS'), ('django', 'Django templating language'), ('html', 'HTML'), ('javascript', 'Javascript'), ('python', 'Python'), ('scss', 'SCSS')])), ('code', wagtail.core.blocks.TextBlock()))))), blank=True, null=True),
         ),
         migrations.AddField(
             model_name='bookmark',

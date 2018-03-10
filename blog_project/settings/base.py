@@ -35,19 +35,19 @@ INSTALLED_APPS = (
     'compressor',
     'modelcluster',
 
-    'wagtail.wagtailcore',
-    'wagtail.wagtailadmin',
-    'wagtail.wagtailsearch',
-    'wagtail.wagtailimages',
-    'wagtail.wagtaildocs',
-    'wagtail.wagtailsnippets',
-    'wagtail.wagtailusers',
-    'wagtail.wagtailsites',
-    'wagtail.wagtailembeds',
-    'wagtail.wagtailredirects',
-    'wagtail.wagtailforms',
-    'wagtail.contrib.wagtailsitemaps',
-    'wagtail.contrib.wagtailsearchpromotions',
+    'wagtail.core',
+    'wagtail.admin',
+    'wagtail.search',
+    'wagtail.images',
+    'wagtail.documents',
+    'wagtail.snippets',
+    'wagtail.users',
+    'wagtail.sites',
+    'wagtail.embeds',
+    'wagtail.contrib.redirects',
+    'wagtail.contrib.forms',
+    'wagtail.contrib.sitemaps',
+    'wagtail.contrib.search_promotions',
     'wagalytics',
     'wagtailfontawesome',
     'search',
@@ -66,8 +66,8 @@ MIDDLEWARE_CLASSES = (
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
     'django.middleware.security.SecurityMiddleware',
 
-    'wagtail.wagtailcore.middleware.SiteMiddleware',
-    'wagtail.wagtailredirects.middleware.RedirectMiddleware',
+    'wagtail.core.middleware.SiteMiddleware',
+    'wagtail.contrib.redirects.middleware.RedirectMiddleware',
 )
 
 ROOT_URLCONF = 'blog_project.urls'
@@ -149,7 +149,7 @@ WAGTAIL_SITE_NAME = "blog_project"
 
 WAGTAILSEARCH_BACKENDS = {
     'default': {
-        'BACKEND': 'wagtail.wagtailsearch.backends.db',
+        'BACKEND': 'wagtail.search.backends.db',
     }
 }
 

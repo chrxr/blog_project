@@ -14,19 +14,19 @@ from modelcluster.models import ClusterableModel
 from taggit.models import Tag, TaggedItemBase
 from taggit.managers import TaggableManager
 from django.shortcuts import render
-from wagtail.wagtailcore.models import Page, Orderable, Site
-from wagtail.wagtailcore.fields import RichTextField, StreamField
-from wagtail.wagtailcore.blocks import ChoiceBlock, TextBlock, ChooserBlock, StructBlock, ListBlock, StreamBlock, FieldBlock, CharBlock, RichTextBlock, PageChooserBlock, RawHTMLBlock
-from wagtail.wagtailadmin.edit_handlers import (FieldPanel,
+from wagtail.core.models import Page, Orderable, Site
+from wagtail.core.fields import RichTextField, StreamField
+from wagtail.core.blocks import ChoiceBlock, TextBlock, ChooserBlock, StructBlock, ListBlock, StreamBlock, FieldBlock, CharBlock, RichTextBlock, PageChooserBlock, RawHTMLBlock
+from wagtail.admin.edit_handlers import (FieldPanel,
                                                 InlinePanel,
                                                 MultiFieldPanel,
                                                 PageChooserPanel,
                                                 StreamFieldPanel,)
-from wagtail.contrib.wagtailroutablepage.models import RoutablePageMixin, route
-from wagtail.wagtailimages.edit_handlers import ImageChooserPanel
-from wagtail.wagtailimages.blocks import ImageChooserBlock
-from wagtail.wagtailsearch import index
-from wagtail.wagtailsnippets.models import register_snippet
+from wagtail.contrib.routable_page.models import RoutablePageMixin, route
+from wagtail.images.edit_handlers import ImageChooserPanel
+from wagtail.images.blocks import ImageChooserBlock
+from wagtail.search import index
+from wagtail.snippets.models import register_snippet
 
 # -- Start snippets -- #
 
