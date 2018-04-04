@@ -1,17 +1,18 @@
 server {
-    listen 443 ssl;
+    # listen 443 ssl;
+    listen 80;
     server_name chrxr.com www.chrxr.com ec2-18-222-156-42.us-east-2.compute.amazonaws.com;
 
-	ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
+	# ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
+    # ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
 
-	ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
-    ssl_prefer_server_ciphers on;
-    ssl_ciphers AES256+EECDH:AES256+EDH:!aNULL;
+	# ssl_protocols TLSv1 TLSv1.1 TLSv1.2;
+    # ssl_prefer_server_ciphers on;
+    # ssl_ciphers AES256+EECDH:AES256+EDH:!aNULL;
 
-    location ~ /.well-known {
-        allow all;
-    }
+    # location ~ /.well-known {
+    #     allow all;
+    # }
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
         root /home/chrxr/blog_project;
@@ -25,8 +26,8 @@ server {
     }
 }
 
-server {
-    listen 80;
-    server_name chrxr.com www.chrxr.com ec2-18-222-156-42.us-east-2.compute.amazonaws.com;
-    return 301 https://$host$request_uri;
-}
+# server {
+#     listen 80;
+#     server_name chrxr.com www.chrxr.com ec2-18-222-156-42.us-east-2.compute.amazonaws.com;
+#     return 301 https://$host$request_uri;
+# }
