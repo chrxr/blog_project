@@ -1,6 +1,6 @@
 server {
     listen 443 ssl;
-    server_name chrxr.com www.chrxr.com;
+    server_name chrxr.com www.chrxr.com ec2-18-222-156-42.us-east-2.compute.amazonaws.com;
 
 	ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
@@ -19,17 +19,6 @@ server {
     location /media/ {
         root /home/chrxr/blog_project;
     }
-    location /runmap {
-        include         uwsgi_params;
-        uwsgi_pass      unix:/home/chrxr/maptest/maptest.sock;
-    }
-    location /timesheets/static/ {
-        root /home/chrxr/timesheets;
-    }
-    location /timesheets {
-        include         uwsgi_params;
-        uwsgi_pass      unix:/home/chrxr/timesheets/timesheets.sock;
-    }
     location / {
         include         uwsgi_params;
         uwsgi_pass      unix:/home/chrxr/blog_project/blog_project.sock;
@@ -38,6 +27,6 @@ server {
 
 server {
     listen 80;
-    server_name chrxr.com www.chrxr.com;
+    server_name chrxr.com www.chrxr.com ec2-18-222-156-42.us-east-2.compute.amazonaws.com;
     return 301 https://$host$request_uri;
 }
