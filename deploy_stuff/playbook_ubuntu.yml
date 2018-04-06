@@ -42,7 +42,7 @@
         - libxslt1-dev
 
     - name: make sure servers are running
-      service: name={{item}} state=started
+      systemd: name={{item}} state=started
       with_items:
         - postgresql
         - nginx
@@ -122,7 +122,7 @@
       pip: name=uwsgi
 
     - name: make sure uwsgi is running
-      service: name=uwsgi state=started
+      systemd: name=uwsgi state=started
 
 # DJANGO MANAGE FOR BLOG
 
@@ -136,12 +136,12 @@
         virtualenv={{ django_dir }}/Env/blog_project
 
     - name: restart uwsgi
-      service: name=uwsgi state=restarted
+      systemd: name=uwsgi state=restarted
   #
   handlers:
     - name: reload postgresql
       become: yes
-      service: name=postgresql state=reloaded
+      systemd: name=postgresql state=reloaded
 
     - name: reload nginx
-      service: name=postgresql state=restarted
+      systemd: name=postgresql state=restarted
