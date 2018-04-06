@@ -2,99 +2,74 @@
 # assumes Ubuntu 14.04 LTS
 
 - hosts: blog-site
-  user: ec2-user
+  user: ubuntu
   vars:
-      django_dir: "/home/ec2-user"
+      django_dir: "/home/ubuntu"
 
   tasks:
 
-    - name: upgrade all packages
-      yum:
-        update_cache: 'yes'
-        name: '*'
-        state: latest
+    - name: apt upgrade and update
+      become: yes
+      apt: update_cache=yes upgrade=dist
 
     - name: install git
-      yum: name=git state=latest
-
-    - name: install postgres rpm
-      yum:
-        name: https://download.postgresql.org/pub/repos/yum/9.6/redhat/rhel-6-x86_64/pgdg-ami201503-96-9.6-2.noarch.rpm
-        state: present
+      become: yes
+      apt: name=git state=latest
 
     - name: install standard servers
-      yum: pkg={{item}} state=latest
+      apt: pkg={{item}} state=latest
       become: yes
       with_items:
-        - '@development'
-        - postgresql96.x86_64 
-        - postgresql96-server.x86_64 
-        - postgresql96-devel.x86_64
-        - postgresql96-libs
-        - postgresql96-contrib
-        - python-psycopg2.x86_64
+        - postgresql
+        - postgresql-contrib
         - nginx
 
-    - name: install epel
-      yum:
-        name: epel-release
-        state: present
-
-    - name: install python3
-      yum: 
-        name: python36.x86_64
-        state: present
-
     - name: install common packages for python application development
-      yum: pkg={{item}} state=latest
+      apt: pkg={{item}} state=latest
+      become: yes
       with_items:
-        - python27-devel.x86_64
-        - python27-pip.noarch
-        - python36-devel.x86_64
-        - python36-pip.noarch
-        - python36-virtualenv.noarch
-        - libxml2-devel.x86_64
-        - libxslt-devel.x86_64  
-
-    - name: install pyscopg2 with pip
-      pip: name=psycopg2
+        - python
+        - python-dev
+        - python-pip
+        - python-psycopg2
+        - python-virtualenv
+        - python3
+        - python3-dev
+        - python3-pip
+        - python3-psycopg2
+        - python3-virtualenv
+        - libxml2-dev
+        - libxslt1-dev
 
     - name: make sure servers are running
       service: name={{item}} state=started
       with_items:
-        - postgresql96
+        - postgresql
         - nginx
 
     - name: clone blog github repo
       git: repo=git@github.com:chrxr/blog_project.git
         dest="{{ django_dir }}/blog_project"
         accept_hostkey=True
-        key_file="{{ django_dir }}/.ssh/id_rsa"
         update=yes
 
     - name: copy postgresql access config
-      template: src=pg_hba.conf dest=/var/lib/pgsql96/data/pg_hba.conf
       become: yes
+      template: src=pg_hba.conf dest=/etc/postgresql/9.5/main/pg_hba.conf
       notify:
           - reload postgresql
 
     - name: Make sure postgres config has been taken on
       meta: flush_handlers
   #
-
-    - name: ensure nginx sites-enabled dirs exist
-      action: file path=/etc/nginx/sites-enabled state=directory
-
-    - name: ensure nginx sites-available dirs exist
-      action: file path=/etc/nginx/sites-available state=directory
-
-
     - name: copy nginx config
+      become: yes
       template: src=nginx/nginx.conf dest=/etc/nginx/nginx.conf
       notify:
           - reload nginx
 
     - name: remove standard default nginx site file
+      become: yes
       action: file path=/etc/nginx/sites-enabled/default state=absent
 
     - name: copy blog_project config
@@ -104,12 +79,15 @@
           - reload nginx
 
     - name: create symoblic links from available to enabled
+      become: yes
       file: src=/etc/nginx/sites-available/blog_project dest=/etc/nginx/sites-enabled/blog_project owner=www-data group=www-data state=link
 
     - name: ensure uwsgi directory exists
+      become: yes
       action: file path=/etc/uwsgi/sites state=directory
-    
+
     - name: ensure uwsgi log directory exists
+      become: yes
       action: file path=/var/log/uwsgi state=directory
 
     - name: copy blog_project uwsgi config
@@ -122,31 +100,31 @@
 
     - name: ensure blog_project database is created
       become: yes
-      become_user: postgres
-      action: postgresql_db db=blog_project
-         encoding='UTF-8'
+      become_user: postgres  
+      postgresql_db:
+         db: blog_project
+         encoding: 'UTF-8'
       notify:
           - reload postgresql
 
-    - name: ensure db is backed up by flushing handlers
-      meta: flush_handlers
-
     - name: add password to postgres user
+      become: yes
+      become_user: postgres  
       postgresql_user: db=blog_project user=postgres password="postgres"
 
     - name: Create Env directory
       action: file path={{ django_dir }}/Env state=directory
 
     - name: install blog_project python dependencies
-      pip: requirements={{ django_dir }}/blog_project/requirements.txt virtualenv={{ django_dir }}/Env/blog_project virtualenv_python=python3.6
+      pip: requirements={{ django_dir }}/blog_project/requirements.txt virtualenv={{ django_dir }}/Env/blog_project virtualenv_python=python3
 
     - name: install uwsgi
       pip: name=uwsgi
 
-    # - name: make sure uwsgi is running
-    #   service: name=uwsgi state=started
+    - name: make sure uwsgi is running
+      service: name=uwsgi state=started
 
-# DJANGO MANAGE FOR BLOG    
+# DJANGO MANAGE FOR BLOG
 
     - django_manage: command=collectstatic
         app_path={{ django_dir }}/blog_project
@@ -156,14 +134,14 @@
         app_path={{ django_dir }}/blog_project
         settings=blog_project.settings
         virtualenv={{ django_dir }}/Env/blog_project
-        
 
     - name: restart uwsgi
       service: name=uwsgi state=restarted
-
+  #
   handlers:
     - name: reload postgresql
-      service: name=postgresql96 state=reloaded
+      become: yes
+      service: name=postgresql state=reloaded
 
     - name: reload nginx
-      service: name=nginx state=restarted
+      service: name=postgresql state=restarted

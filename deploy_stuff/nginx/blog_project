@@ -15,14 +15,14 @@ server {
     # }
     location = /favicon.ico { access_log off; log_not_found off; }
     location /static/ {
-        root /home/chrxr/blog_project;
+        root /home/ec2-user/blog_project;
     }
     location /media/ {
-        root /home/chrxr/blog_project;
+        root /home/ec2-user/blog_project;
     }
     location / {
         include         uwsgi_params;
-        uwsgi_pass      unix:/home/chrxr/blog_project/blog_project.sock;
+        uwsgi_pass      unix:/home/ec2-user/blog_project/blog_project.sock;
     }
 }
 
