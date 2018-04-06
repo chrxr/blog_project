@@ -96,7 +96,7 @@
 
     - name: copy uwsgi startup script
       become: yes
-      template: src=uwsgi/uwsgi.conf dest=/etc/init/uwsgi.conf
+      template: src=uwsgi/uwsgi.service dest=/etc/systemd/system/uwsgi.service
 
     - name: ensure blog_project database is created
       become: yes
