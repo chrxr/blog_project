@@ -8,7 +8,7 @@ from pygments.formatters import get_formatter_by_name
 from pygments.lexers import get_lexer_by_name
 
 from modelcluster.fields import ParentalKey
-from modelcluster.tags import ClusterTaggableManager
+from modelcluster.contrib.taggit import ClusterTaggableManager
 from modelcluster.models import ClusterableModel
 
 from taggit.models import Tag, TaggedItemBase
@@ -56,7 +56,7 @@ register_snippet(Bookmark)
 
 class BookmarkPlacement(models.Model):
     page = ParentalKey('wagtailcore.Page', related_name='bookmark_placements')
-    quote = models.ForeignKey('blog.Bookmark', related_name='+')
+    quote = models.ForeignKey('blog.Bookmark', related_name='+', on_delete=models.CASCADE)
 
 # -- End snippets -- #
 
@@ -197,7 +197,8 @@ class LinkFields(models.Model):
         'wagtailcore.Page',
         null=True,
         blank=True,
-        related_name='+'
+        related_name='+',
+        on_delete=models.CASCADE
     )
 
     @property

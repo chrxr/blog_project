@@ -14,3 +14,4 @@ Vagrantfile.local
 *.json
 deploy_stuff/playbook.retry
 backup-*.sql
+*.pgsql

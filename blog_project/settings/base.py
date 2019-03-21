@@ -46,9 +46,8 @@ INSTALLED_APPS = (
     'wagtail.embeds',
     'wagtail.contrib.redirects',
     'wagtail.contrib.forms',
-    'wagtail.contrib.sitemaps',
     'wagtail.contrib.search_promotions',
-    'wagalytics',
+    # 'wagalytics',
     'wagtailfontawesome',
     'search',
     'home',
@@ -56,19 +55,19 @@ INSTALLED_APPS = (
     'blog_feed',
 )
 
-MIDDLEWARE_CLASSES = (
+MIDDLEWARE = [
+    'django.middleware.security.SecurityMiddleware',
     'django.contrib.sessions.middleware.SessionMiddleware',
     'django.middleware.common.CommonMiddleware',
     'django.middleware.csrf.CsrfViewMiddleware',
     'django.contrib.auth.middleware.AuthenticationMiddleware',
-    'django.contrib.auth.middleware.SessionAuthenticationMiddleware',
     'django.contrib.messages.middleware.MessageMiddleware',
     'django.middleware.clickjacking.XFrameOptionsMiddleware',
-    'django.middleware.security.SecurityMiddleware',
 
     'wagtail.core.middleware.SiteMiddleware',
     'wagtail.contrib.redirects.middleware.RedirectMiddleware',
-)
+]
+
 
 ROOT_URLCONF = 'blog_project.urls'
 
@@ -99,7 +98,7 @@ WSGI_APPLICATION = 'blog_project.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql_psycopg2',
-        'NAME': 'blog_project',
+        'NAME': 'blog_project_2',
         'USER': 'postgres',
         'PASSWORD': 'postgres',
         'HOST': 'localhost',  # Set to empty string for localhost.

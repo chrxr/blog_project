@@ -15,7 +15,7 @@ class Migration(migrations.Migration):
         migrations.CreateModel(
             name='BookmarkPage',
             fields=[
-                ('page_ptr', models.OneToOneField(auto_created=True, to='wagtailcore.Page', parent_link=True, primary_key=True, serialize=False)),
+                ('page_ptr', models.OneToOneField(auto_created=True, to='wagtailcore.Page', parent_link=True, primary_key=True, serialize=False, on_delete=models.CASCADE)),
                 ('intro', models.CharField(blank=True, max_length=250, null=True)),
             ],
             options={

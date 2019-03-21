@@ -34,7 +34,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('page', modelcluster.fields.ParentalKey(to='wagtailcore.Page', related_name='bookmark_placements')),
-                ('quote', models.ForeignKey(to='blog.Bookmark', related_name='+')),
+                ('quote', models.ForeignKey(to='blog.Bookmark', related_name='+', on_delete=models.CASCADE)),
             ],
         ),
         migrations.CreateModel(
@@ -42,7 +42,7 @@ class Migration(migrations.Migration):
             fields=[
                 ('id', models.AutoField(auto_created=True, primary_key=True, verbose_name='ID', serialize=False)),
                 ('content_object', modelcluster.fields.ParentalKey(to='blog.Bookmark', related_name='tagged_items')),
-                ('tag', models.ForeignKey(to='taggit.Tag', related_name='blog_bookmarktag_items')),
+                ('tag', models.ForeignKey(to='taggit.Tag', related_name='blog_bookmarktag_items', on_delete=models.CASCADE)),
             ],
             options={
                 'abstract': False,
