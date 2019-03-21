@@ -14,7 +14,7 @@ django-compressor==1.5
 django-medusa==0.3.0
 django-modelcluster==4.1
 django-sendfile==0.3.11
-django-taggit==0.22.2
+django-taggit==0.23.0
 django-treebeard==4.0.1
 djangorestframework==3.9.2
 ecdsa==0.13
