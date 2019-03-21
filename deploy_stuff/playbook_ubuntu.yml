@@ -118,11 +118,17 @@
     - name: install blog_project python dependencies
       pip: requirements={{ django_dir }}/blog_project/requirements.txt virtualenv={{ django_dir }}/Env/blog_project virtualenv_python=python3
 
+
+    - name: make sure uwsgi is stopped
+      systemd: name=uwsgi state=stopped
+      become: yes
+
     - name: install uwsgi
       pip: name=uwsgi
 
     - name: make sure uwsgi is running
       systemd: name=uwsgi state=started
+      become: yes
 
 # DJANGO MANAGE FOR BLOG
 
@@ -137,6 +143,7 @@
 
     - name: restart uwsgi
       systemd: name=uwsgi state=restarted
+      become: yes
   #
   handlers:
     - name: reload postgresql
