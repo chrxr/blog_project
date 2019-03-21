@@ -3,11 +3,11 @@ Jinja2==2.8
 Markdown==2.6.2
 MarkupSafe==0.23
 Pillow>2.8.2
-PyYAML==3.11
+PyYAML==4.2b1
 Pygments==2.0.2
 Unidecode==0.04.18
 Willow>0.2.2
-ansible==2.0.1.0
+ansible==2.3.1.0
 beautifulsoup4==4.4.0
 django-appconf==1.0.3
 django-compressor==1.5
@@ -31,7 +31,7 @@ pyasn1-modules==0.0.8
 pycrypto==2.6.1
 python-memcached==1.59
 pytz==2015.4
-requests==2.7.0
+requests==2.20.0
 rsa==3.3
 simplejson==3.8.2
 six==1.9.0
