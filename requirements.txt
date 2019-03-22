@@ -8,7 +8,7 @@ Pygments==2.0.2
 Unidecode==0.04.18
 Willow>0.2.2
 ansible==2.3.1.0
-beautifulsoup4==4.6.1
+beautifulsoup4==4.6.0
 django-appconf==1.0.3
 django-compressor==1.5
 django-medusa==0.3.0
