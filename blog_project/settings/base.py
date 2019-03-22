@@ -47,7 +47,6 @@ INSTALLED_APPS = (
     'wagtail.contrib.redirects',
     'wagtail.contrib.forms',
     'wagtail.contrib.search_promotions',
-    # 'wagalytics',
     'wagtailfontawesome',
     'search',
     'home',
