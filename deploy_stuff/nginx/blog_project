@@ -23,6 +23,17 @@ server {
     }
 }
 
+server {
+    listen 443 ssl;
+    server_name www.chrxr.com
+    
+    ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
+    ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
+  
+    ssl_prefer_server_ciphers on;
+    return 301 https://chrxr.com$request_uri;
+}
+
 
 server {
      listen 80;
