@@ -7,7 +7,7 @@ TEMPLATE_DEBUG = False
 
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ALLOWED_HOSTS = ['chrxr.com', '18.220.139.29']
+ALLOWED_HOSTS = ['chrxr.com', 'www.chrxr.com', '18.220.139.29']
 
 LOGGING = {
     'version': 1,
