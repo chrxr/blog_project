@@ -19,7 +19,7 @@ server {
     }
     location / {
         include         uwsgi_params;
-        uwsgi_pass      unix:/home/ec2-user/blog_project/blog_project.sock;
+        uwsgi_pass      unix:/home/ubuntu/blog_project/blog_project.sock;
     }
 }
 
