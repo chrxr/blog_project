@@ -151,4 +151,5 @@
       systemd: name=postgresql state=reloaded
 
     - name: reload nginx
+      become: yes
       systemd: name=postgresql state=restarted

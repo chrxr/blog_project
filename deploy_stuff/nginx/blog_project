@@ -1,6 +1,6 @@
 server {
     listen 80;
-    server_name chrxr.com www.chrxr.com;
+    server_name chrxr.com www.chrxr.com 18.220.139.29;
 
     location = /favicon.ico { 
         access_log off; log_not_found off; 
