@@ -55,7 +55,7 @@
 
     - name: copy postgresql access config
       become: yes
-      template: src=pg_hba.conf dest=/etc/postgresql/9.5/main/pg_hba.conf
+      template: src=pg_hba.conf dest=/etc/postgresql/10/main/pg_hba.conf
       notify:
           - reload postgresql
 

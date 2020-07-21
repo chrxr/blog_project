@@ -1,6 +1,6 @@
 server {
     listen 443 ssl;
-    server_name chrxr.com 18.220.139.29;
+    server_name chrxr.com 100.25.157.145;
  
  	ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
     ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
