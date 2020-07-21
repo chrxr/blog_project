@@ -1,11 +1,11 @@
 server {
-    listen 443 ssl;
+    listen 80;
     server_name chrxr.com 100.25.157.145;
  
- 	ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
+ 	# ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
+  #   ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
   
-    ssl_prefer_server_ciphers on;
+  #   ssl_prefer_server_ciphers on;
  
     location ~ /.well-known {
          allow all;
@@ -23,23 +23,48 @@ server {
     }
 }
 
-server {
-    listen 443 ssl;
-    server_name www.chrxr.com
-    
-    ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
-    ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
+# server {
+#     listen 443 ssl;
+#     server_name chrxr.com 100.25.157.145;
+ 
+#  	ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
   
-    ssl_prefer_server_ciphers on;
-    return 301 https://chrxr.com$request_uri;
-}
+#     ssl_prefer_server_ciphers on;
+ 
+#     location ~ /.well-known {
+#          allow all;
+#     }
+#     location = /favicon.ico { access_log off; log_not_found off; }
+#     location /static/ {
+#         root /home/ubuntu/blog_project;
+#     }
+#     location /media/ {
+#         root /home/ubuntu/blog_project;
+#     }
+#     location / {
+#         include         uwsgi_params;
+#         uwsgi_pass      unix:/run/uwsgi/blog_project.sock;
+#     }
+# }
+
+# server {
+#     listen 443 ssl;
+#     server_name www.chrxr.com
+    
+#     ssl_certificate /etc/letsencrypt/live/chrxr.com/fullchain.pem;
+#     ssl_certificate_key /etc/letsencrypt/live/chrxr.com/privkey.pem;
+  
+#     ssl_prefer_server_ciphers on;
+#     return 301 https://chrxr.com$request_uri;
+# }
 
 
-server {
-     listen 80;
-     server_name chrxr.com www.chrxr.com 18.220.139.29;
-     return 301 https://$host$request_uri;
-}
+# server {
+#      listen 80;
+#      server_name chrxr.com www.chrxr.com 18.220.139.29;
+#      return 301 https://$host$request_uri;
+# }
 
 
 
