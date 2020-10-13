@@ -16,3 +16,4 @@ deploy_stuff/playbook.retry
 backup-*.sql
 *.pgsql
 /Env/
+.env.*

@@ -149,18 +149,7 @@ WAGTAILSEARCH_BACKENDS = {
     }
 }
 
-# Static site generator settings
-
-MEDUSA_RENDERER_CLASS = 'django_medusa.renderers.DiskStaticSiteRenderer'
-MEDUSA_DEPLOY_DIR = os.path.join(BASE_DIR, 'build')
-SENDFILE_BACKEND = 'sendfile.backends.simple'
-
 try:
     from .local import *
 except ImportError:
     pass
-
-# Wagalytics
-
-GA_KEY_FILEPATH = '/path/to/secure/directory/your-key.json'
-GA_VIEW_ID = 'ga:xxxxxxxx'

@@ -5,12 +5,14 @@ from .base import *
 DEBUG = False
 TEMPLATE_DEBUG = False
 
+SECRET_KEY = os.environ.get("SECRET_KEY")
+
+ALLOWED_HOSTS = os.environ.get("DJANGO_ALLOWED_HOSTS").split(" ")
+
 EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
 
-ALLOWED_HOSTS = ['chrxr.com', 'www.chrxr.com', '100.25.157.145']
-
-LOGGING = {
-    'version': 1,
+LOGGING = { 
+    'version': 1, 
     'disable_existing_loggers': False,
     'handlers': {
     	'file': {
