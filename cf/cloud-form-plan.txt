@@ -1,0 +1,14 @@
+ECS:
+
+* VPC
+* Subnet
+* Security group for RDS
+* RDS
+* Internet gateway
+* Gateway attachment
+* Load balancer
+* ECS role
+* ECS cluster
+* ECS task definition
+* ECS service
+
