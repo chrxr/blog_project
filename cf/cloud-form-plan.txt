@@ -1,14 +1,15 @@
 ECS:
 
-* VPC
-* Subnet
-* Security group for RDS
-* RDS
-* Internet gateway
-* Gateway attachment
-* Load balancer
+* VPC - DONE
+* Subnet - DONE
+* Security group for RDS - DONE
+* RDS - DONE
+* Load balancer - DONE
+* Internet gateway - DONE
+* Gateway attachment - DONE
+* ECR repo - DONE
+* ECS cluster - DONE
 * ECS role
-* ECS cluster
 * ECS task definition
 * ECS service
 
