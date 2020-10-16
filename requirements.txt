@@ -34,3 +34,5 @@ wagtail
 wagtailfontawesome
 wheel
 gunicorn
+boto3
+django-storages

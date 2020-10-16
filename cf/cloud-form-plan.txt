@@ -10,6 +10,20 @@ ECS:
 * ECR repo - DONE
 * ECS cluster - DONE
 * ECS role
+  * Regular ECS service stuff
+  * Role for container to work with S3
 * ECS task definition
 * ECS service
 
+
+## Getting Django running with RDS and S3:
+
+* Set environment variables as parameters
+  * DB engine
+  * DB host and port
+  * DB username and password
+  * Secret key
+  * Allowed hosts (to be set to the ELB hostname)
+  * Static files on S3
+  * Superuser info
+* Django settings for S3 - Maybe done
