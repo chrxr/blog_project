@@ -27,3 +27,4 @@ ECS:
   * Static files on S3
   * Superuser info
 * Django settings for S3 - Maybe done
+

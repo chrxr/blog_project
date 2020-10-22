@@ -14,5 +14,6 @@ fi
 python manage.py migrate
 python manage.py collectstatic --no-input --clear
 python manage.py createsuperuser --noinput
+gunicorn blog_project.wsgi:application --bind 0.0.0.0:8000
 
 exec "$@"
