@@ -59,7 +59,7 @@
     },
     "useS3": {
       "Type": "String",
-      "AllowedValues": ["true", "false"],
+      "AllowedValues": ["TRUE", "FALSE"],
       "Description": "Whether or not we will use S3 for static storage"
     }
   },
@@ -504,9 +504,10 @@
               {"Name": "DJANGO_SUPERUSER_PASSWORD", "Value": {"Ref": "DjangoSuperUserPassword"} },
               {"Name": "DJANGO_SUPERUSER_EMAIL", "Value": {"Ref": "DjangoSuperUserEmail"} },
               {"Name": "DJANGO_SUPERUSER_USERNAME", "Value": {"Ref": "DjangoSuperUserUsername"} },
-              {"Name": "AWS_STORAGE_BUCKET_NAME", "Value": {"Ref": "websiteS3Bucket"} } 
+              {"Name": "AWS_STORAGE_BUCKET_NAME", "Value": {"Ref": "websiteS3Bucket"} },
+              {"Name": "USE_S3", "Value": {"Ref": "useS3"} }, 
             ],
-            "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project:v2.0",
+            "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project:v4.0",
             "MountPoints": [
               {"ContainerPath": "/home/app/web/media", "SourceVolume": "media_volume"},
               {"ContainerPath": "/home/app/web/static", "SourceVolume": "static_volume"},

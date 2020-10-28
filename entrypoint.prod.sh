@@ -12,8 +12,11 @@ then
 fi
 
 python manage.py migrate
+echo "Migrated"
 python manage.py collectstatic --no-input --clear
+echo "Collected Static"
 python manage.py createsuperuser --noinput
+echo "Created super user"
 gunicorn blog_project.wsgi:application --bind 0.0.0.0:8000
 
 exec "$@"

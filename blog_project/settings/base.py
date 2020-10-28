@@ -134,6 +134,7 @@ STATICFILES_DIRS = (
 )
 
 USE_S3 = os.getenv('USE_S3') == 'TRUE'
+print(USE_S3)
 
 if USE_S3:
   AWS_STORAGE_BUCKET_NAME = os.getenv('AWS_STORAGE_BUCKET_NAME')
