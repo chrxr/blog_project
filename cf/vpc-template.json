@@ -1,0 +1,30 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "VPC for ECS",
+  "Resources": {
+    "ecsVPC": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.1.0.0/16",
+        "InstanceTenancy": "default",
+        "Tags": [{"Key": "Name", "Value": "ECS VPC"}]
+      }
+    },
+    "privateSubnet": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select" : [ 
+            "0", 
+            { 
+              "Fn::GetAZs" : "" 
+            } 
+          ]
+        },
+        "CidrBlock": "10.1.1.0/24",
+        "Tags": [{"Key": "Name", "Value": "ECS subnet"}],
+        "VpcId": {"Ref": "ecsVPC"}
+      }
+    }
+  }
+}
