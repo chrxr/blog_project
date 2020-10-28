@@ -463,7 +463,7 @@
                 "Ref":"AWS::StackName"
               }
             ]
-          ]
+          ] 
         },
         "RetentionInDays":14
       }
@@ -503,7 +503,8 @@
               {"Name": "SQL_PORT", "Value": "5432"},
               {"Name": "DJANGO_SUPERUSER_PASSWORD", "Value": {"Ref": "DjangoSuperUserPassword"} },
               {"Name": "DJANGO_SUPERUSER_EMAIL", "Value": {"Ref": "DjangoSuperUserEmail"} },
-              {"Name": "DJANGO_SUPERUSER_USERNAME", "Value": {"Ref": "DjangoSuperUserUsername"} } 
+              {"Name": "DJANGO_SUPERUSER_USERNAME", "Value": {"Ref": "DjangoSuperUserUsername"} },
+              {"Name": "AWS_STORAGE_BUCKET_NAME", "Value": {"Ref": "websiteS3Bucket"} } 
             ],
             "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project:v2.0",
             "MountPoints": [
