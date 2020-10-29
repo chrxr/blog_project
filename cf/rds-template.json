@@ -254,7 +254,13 @@
         "VpcId": {"Ref": "ecsVPC"}, 
         "SecurityGroupIngress": [
           {
-            "CidrIp": "10.1.1.0/24",
+            "CidrIp": "10.1.3.0/24",
+            "FromPort": "5432",
+            "ToPort": "5432",
+            "IpProtocol": "tcp"
+          },
+          {
+            "CidrIp": "10.1.4.0/24",
             "FromPort": "5432",
             "ToPort": "5432",
             "IpProtocol": "tcp"
@@ -471,6 +477,7 @@
 
     "ecsCFTaskDef": {
       "Type" : "AWS::ECS::TaskDefinition",
+      "DependsOn" : "ecsRDS",
       "Properties" : {
         "RequiresCompatibilities": ["FARGATE"],
         "Family": "BlogECSTaskDefFamily",
@@ -495,19 +502,20 @@
               {"Name": "SECRET_KEY", "Value": {"Ref": "DjangoSecretKey"} },
               {"Name": "DJANGO_ALLOWED_HOSTS", "Value": "*"},
               {"Name": "DJANGO_SETTINGS_MODULE", "Value": "blog_project.settings.production"},
-              {"Name": "COMMENT_SQL_ENGINE", "Value": "django.db.backends.postgresql"},
-              {"Name": "COMMENT_SQL_DATABASE", "Value": "blog_project"},
+              {"Name": "SQL_ENGINE", "Value": "django.db.backends.postgresql"},
+              {"Name": "SQL_DATABASE", "Value": {"Ref": "InitialDBName"} },
               {"Name": "SQL_USER", "Value": "postgres"},
               {"Name": "SQL_PASSWORD", "Value": "postgres"},
-              {"Name": "SQL_HOST", "Value": ""},
-              {"Name": "SQL_PORT", "Value": "5432"},
+              {"Name": "SQL_HOST", "Value": { "Fn::GetAtt" : [ "ecsRDS", "Endpoint.Address" ] } },
+              {"Name": "SQL_PORT", "Value": { "Fn::GetAtt" : [ "ecsRDS", "Endpoint.Port" ] } },
               {"Name": "DJANGO_SUPERUSER_PASSWORD", "Value": {"Ref": "DjangoSuperUserPassword"} },
               {"Name": "DJANGO_SUPERUSER_EMAIL", "Value": {"Ref": "DjangoSuperUserEmail"} },
               {"Name": "DJANGO_SUPERUSER_USERNAME", "Value": {"Ref": "DjangoSuperUserUsername"} },
               {"Name": "AWS_STORAGE_BUCKET_NAME", "Value": {"Ref": "websiteS3Bucket"} },
-              {"Name": "USE_S3", "Value": {"Ref": "useS3"} }, 
+              {"Name": "USE_S3", "Value": {"Ref": "useS3"} },
+              {"Name": "DATABASE", "Value": "postgres"},
             ],
-            "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project:v4.0",
+            "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project:v5.0",
             "MountPoints": [
               {"ContainerPath": "/home/app/web/media", "SourceVolume": "media_volume"},
               {"ContainerPath": "/home/app/web/static", "SourceVolume": "static_volume"},
