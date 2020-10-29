@@ -1,0 +1,135 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Networking stack for ECS",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    "EcsVpc": {
+      "Type": "AWS::EC2::VPC",
+      "Properties": {
+        "CidrBlock": "10.1.0.0/16",
+        "InstanceTenancy": "default",
+        "Tags": [{"Key": "Name", "Value": "EcsVpc"}]
+      }
+    },
+
+    "PublicSubnet1": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select" : [ 
+            "0", 
+            { 
+              "Fn::GetAZs" : "" 
+            } 
+          ]
+        },
+        "CidrBlock": "10.1.2.0/24",
+        "Tags": [{"Key": "Name", "Value": "PublicSubnet1"}],
+        "VpcId": {"Ref": "EcsVpc"}
+      }
+    },
+    
+    "PublicSubnet2": {
+      "Type": "AWS::EC2::Subnet",
+      "Properties": {
+        "AvailabilityZone": {
+          "Fn::Select" : [ 
+            "1", 
+            { 
+              "Fn::GetAZs" : "" 
+            } 
+          ]
+        },
+        "CidrBlock": "10.1.5.0/24",
+        "Tags": [{"Key": "Name", "Value": "PublicSubnet2"}],
+        "VpcId": {"Ref": "EcsVpc"}
+      }
+    },
+
+    "InternetGateway": {
+      "Type": "AWS::EC2::InternetGateway",
+      "Properties": {
+        "Tags": [{"Key": "Name", "Value": "ALB Internet Gateway"}]
+      }
+    },
+
+    "GatewayAttachment": {
+      "Type": "AWS::EC2::VPCGatewayAttachment",
+      "Properties": {
+        "InternetGatewayId": {"Ref": "InternetGateway"},
+        "VpcId": {"Ref": "EcsVpc"}
+      }
+    },  
+
+    "IgRouteTable": {
+      "Type" : "AWS::EC2::RouteTable",
+      "Properties" : {
+          "Tags" : [ {"Key": "Name", "Value": "Route table for IG"}],
+          "VpcId" : {"Ref": "EcsVpc"}
+        }
+    },
+
+    "IgRoute": {
+      "Type": "AWS::EC2::Route",
+      "Properties": {
+        "DestinationCidrBlock": "0.0.0.0/0",
+        "GatewayId": {"Ref": "InternetGateway"},
+        "RouteTableId": {"Ref": "IgRouteTable"}
+      }
+    },
+
+    "Subnet1RtAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {"Ref": "IgRouteTable"},
+        "SubnetId": {"Ref": "PublicSubnet1"}
+      }
+    },
+
+    "Subnet2RtAssociation": {
+      "Type": "AWS::EC2::SubnetRouteTableAssociation",
+      "Properties": {
+        "RouteTableId": {"Ref": "IgRouteTable"},
+        "SubnetId": {"Ref": "PublicSubnet2"}
+      }
+    }
+  },
+  "Outputs": {
+    "EcsVpcId": {
+      "Description" : "The ID of the VPC",
+      "Value" : { "Ref" : "EcsVpc" },
+      "Export" : {
+        "Name" : {"Fn::Sub": "${AWS::StackName}-VPCID" }
+      }
+    },
+    "PublicSubnet1Id": {
+      "Description" : "The ID of public subnet 1",
+      "Value" : { "Ref" : "PublicSubnet1" },
+      "Export" : {
+        "Name" : {"Fn::Sub": "${AWS::StackName}-PUBSUB1ID" }
+      }
+    },
+    "PublicSubnet2Id": {
+      "Description" : "The ID of public subnet 1",
+      "Value" : { "Ref" : "PublicSubnet2" },
+      "Export" : {
+        "Name" : {"Fn::Sub": "${AWS::StackName}-PUBSUB2ID" }
+      }
+    },
+    "IgRouteTableId": {
+      "Description" : "The ID of ig route table",
+      "Value" : { "Ref" : "IgRouteTable" },
+      "Export" : {
+        "Name" : {"Fn::Sub": "${AWS::StackName}-IGRTID" }
+      }
+    },
+    "InternetGatewayId": {
+      "Description" : "The ID of the internet gateway",
+      "Value" : { "Ref" : "InternetGateway" },
+      "Export" : {
+        "Name" : {"Fn::Sub": "${AWS::StackName}-IGID" }
+      }
+    }
+  }
+}

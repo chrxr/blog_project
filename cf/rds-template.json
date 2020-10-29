@@ -269,7 +269,7 @@
       }
     },
 
-    "ECSSecurityGroup": {
+    "ECSTaskSecurityGroup": {
       "Type": "AWS::EC2::SecurityGroup",
       "Properties": {
         "GroupDescription": "Security group for ECS task",
@@ -279,6 +279,12 @@
         "SecurityGroupIngress": [
           {
             "CidrIp": "0.0.0.0/0",
+            "FromPort": "8000",
+            "ToPort": "8000",
+            "IpProtocol": "tcp"
+          },
+          {
+            "SourceSecurityGroupId": {"Ref": "LoadBalancerSecurityGroup"},
             "FromPort": "8000",
             "ToPort": "8000",
             "IpProtocol": "tcp"
@@ -317,13 +323,91 @@
       }
     },  
 
+    "LoadBalancerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for Load Balancer for ECS",
+        "GroupName": "ECSLoadBalancerSecurityGroup",
+        "Tags": [{"Key": "Name", "Value": "SG for ECS ELB"}],
+        "VpcId": {"Ref": "ecsVPC"}, 
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": "80",
+            "ToPort": "80",
+            "IpProtocol": "tcp"
+          },
+        ]
+      }  
+    },
+
     "ecsLoadbalancer": {
       "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
       "Properties": {
+        "SecurityGroups": [
+          {"Ref": "LoadBalancerSecurityGroup"}
+        ],
         "IpAddressType": "ipv4",
         "Name": "ecsLoadbalancer",
         "Subnets": [{"Ref": "publicSubnet1"}, {"Ref": "publicSubnet2"}],
         "Type": "application"
+      }
+    },
+
+    "ecsTargetGroup": {
+      "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+      "Properties": {
+        "Name": "ecsTargetGroup",
+        "Port": "80",
+        "VpcId": {"Ref": "ecsVPC"},
+        "TargetType": "ip",
+        "Protocol": "HTTP",
+      }
+    },
+
+    "ALBListener":{
+      "Type":"AWS::ElasticLoadBalancingV2::Listener",
+      "Properties":{
+        "DefaultActions":[
+          {
+            "Type":"forward",
+            "TargetGroupArn":{
+              "Ref":"ecsTargetGroup"
+            }
+          }
+        ],
+        "LoadBalancerArn":{
+          "Ref":"ecsLoadbalancer"
+        },
+        "Port":"80",
+        "Protocol":"HTTP"
+      }
+    },
+
+    "ECSALBListenerRule":{
+      "Type":"AWS::ElasticLoadBalancingV2::ListenerRule",
+      "DependsOn":"ALBListener",
+      "Properties":{
+        "Actions":[
+          {
+            "Type":"forward",
+            "TargetGroupArn":{
+              "Ref":"ecsTargetGroup"
+            }
+          }
+        ],
+        "Conditions":[
+          {
+            "Field":"path-pattern",
+            "Values":[
+              "/"
+            ]
+          }
+        ],
+        "ListenerArn":{
+          "Ref":"ALBListener"
+        },
+        "Priority":1
       }
     },
 
@@ -446,14 +530,21 @@
               {"Ref": "ECSSubnet2"},
             ],
             "SecurityGroups": [
-              {"Ref": "ECSSecurityGroup"}
+              {"Ref": "ECSTaskSecurityGroup"}
             ]
           }
         },
         "Tags": [{"Key": "Name", "Value": "ECSCFService"}],
         "ServiceName": "ECSCFService",
         "DesiredCount": "1",
-        "TaskDefinition": {"Ref": "ecsCFTaskDef"}
+        "TaskDefinition": {"Ref": "ecsCFTaskDef"},
+        "LoadBalancers": [
+          {
+            "ContainerName" : "blogTaskCF",
+            "ContainerPort" : "8000",
+            "TargetGroupArn" : {"Ref": "ecsTargetGroup"}
+          }
+        ]
       }
     },
 

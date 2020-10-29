@@ -9,11 +9,16 @@ ECS:
 * Gateway attachment - DONE
 * ECR repo - DONE
 * ECS cluster - DONE
-* ECS role
+* ECS role - DONE
   * Regular ECS service stuff
   * Role for container to work with S3
-* ECS task definition
-* ECS service
+* ECS task definition - DONE
+* ECS service - DONE
+* Load balancer target group
+* Adjust service to use load balancer
+* Add load balancer security group to allow traffic from the Internet
+* Adjust ECS security group to allow traffic from load balancer security group
+
 
 
 ## Getting Django running with RDS and S3:
@@ -26,5 +31,5 @@ ECS:
   * Allowed hosts (to be set to the ELB hostname)
   * Static files on S3
   * Superuser info
-* Django settings for S3 - Maybe done
+* Django settings for S3 - DONE
 
