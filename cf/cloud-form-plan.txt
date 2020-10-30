@@ -33,3 +33,9 @@ ECS:
   * Superuser info
 * Django settings for S3 - DONE
 
+
+
+Splitting CloudFormation:
+
+- Networking
+- 

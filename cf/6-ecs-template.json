@@ -1,0 +1,212 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "RDS for ECS",
+  "Parameters": {
+    "DjangoDebugMode": {
+      "Type": "String",
+      "AllowedValues": ["0", "1"],
+      "Description": "1 for debug on"
+    },
+    "DjangoSecretKey": {
+      "Type": "String",
+      "MinLength": "15",
+      "Description": "Secret key for Django"
+    },
+    "DjangoSuperUserUsername": {
+      "Type": "String",
+      "Description": "Username for Django superuser"
+    },
+    "DjangoSuperUserPassword": {
+      "Type": "String",
+      "NoEcho": "true",
+      "Description": "Password for Django superuser"
+    },
+    "DjangoSuperUserEmail": {
+      "Type": "String",
+      "Description": "Email address for Django superuser"
+    },
+    "DjangoAllowedHosts": {
+      "Type": "String",
+      "Description": "The hosts allowed access to Django"
+    },
+    "useS3": {
+      "Type": "String",
+      "AllowedValues": ["TRUE", "FALSE"],
+      "Description": "Whether or not we will use S3 for static storage"
+    }
+  },
+  "Metadata": {},
+  "Resources": {
+    "EcsS3IamPolicy": {
+      "Type" : "AWS::IAM::ManagedPolicy",
+      "Properties" : {
+        "Description" : "IAM policy for Django container to push static and media assets to S3",
+        "ManagedPolicyName" : "ECStoS3policy",
+        "PolicyDocument" : {
+          "Version": "2012-10-17",
+          "Statement": [
+              {
+                  "Sid": "1",
+                  "Effect": "Allow",
+                  "Action": [
+                      "s3:PutObject",
+                      "s3:GetObjectAcl",
+                      "s3:GetObject",
+                      "s3:ListBucket",
+                      "s3:DeleteObject",
+                      "s3:PutObjectAcl"
+                  ],
+                  "Resource": [
+                      {"Fn::Sub": [ "arn:aws:s3:::${BucketName}/*", {"BucketName": {"Fn::ImportValue": "ECSS3STACK-S3BUCKETID"}} ]}
+                  ]
+              }
+          ]
+        }
+      } 
+    },
+
+    "EcsS3IamRole": {   
+      "Type": "AWS::IAM::Role",
+      "Properties": {
+        "AssumeRolePolicyDocument" : {
+          "Version": "2012-10-17",
+          "Statement": [
+            {
+              "Effect": "Allow",
+              "Principal": {
+                "Service": [    
+                  "ecs-tasks.amazonaws.com"
+                ]
+              },
+              "Action": [ 
+                "sts:AssumeRole" 
+              ]
+            }
+          ]
+        },
+        "Description" : "IAM policy for Django container to push static and media assets to S3",
+        "ManagedPolicyArns" : [ {"Ref": "EcsS3IamPolicy"} ],
+        "RoleName" : "ECStoS3Role",
+      }
+    },
+
+    "EcsCluster": {
+      "Type": "AWS::ECS::Cluster",
+      "Properties": {
+        "ClusterName": "EcsClusterCf"
+      }
+    },
+
+    "EcsService": {
+      "Type": "AWS::ECS::Service",
+      "Properties": {
+        "Cluster": {"Ref": "EcsCluster"},
+        "LaunchType": "FARGATE",
+        "NetworkConfiguration": {
+          "AwsVpcConfiguration": {
+            "AssignPublicIp": "ENABLED",
+            "Subnets": [
+              {"Fn::ImportValue" : "ECSNETWORK-PUBSUB1ID"}, 
+              {"Fn::ImportValue" : "ECSNETWORK-PUBSUB2ID"}
+            ],
+            "SecurityGroups": [
+              {"Fn::ImportValue" : "ECSSGSTACK-ECSTASKSECURITYGROUP"}
+            ]
+          }
+        },
+        "Tags": [{"Key": "Name", "Value": "EcsCfService"}],
+        "ServiceName": "EcsCfService",
+        "DesiredCount": "1",
+        "TaskDefinition": {"Ref": "EcsCfTaskDef"},
+        "LoadBalancers": [
+          {
+            "ContainerName" : "BlogTaskCF",
+            "ContainerPort" : "8000",
+            "TargetGroupArn" : {"Fn::ImportValue": "ECSALBSTACK-ECSTARGETGROUPID"},
+          }
+        ]
+      }
+    },
+
+    "CloudwatchLogsGroup":{
+      "Type":"AWS::Logs::LogGroup",
+      "Properties":{
+        "LogGroupName":{
+          "Fn::Join":[
+            "-",
+            [
+              "EcsLogGroup",
+              {
+                "Ref":"AWS::StackName"
+              }
+            ]
+          ] 
+        },
+        "RetentionInDays":14
+      }
+    },
+
+    "EcsCfTaskDef": {
+      "Type" : "AWS::ECS::TaskDefinition",
+      "Properties" : {
+        "RequiresCompatibilities": ["FARGATE"],
+        "Family": "BlogECSTaskDefFamily",
+        "Volumes": [
+          {"Name": "media_volume"},
+          {"Name": "static_volume"}
+        ],
+        "TaskRoleArn": {"Ref": "EcsS3IamRole"},
+        "NetworkMode": "awsvpc",
+        "Cpu": "1024",
+        "Memory": "2048",
+        "ExecutionRoleArn": "arn:aws:iam::046080352995:role/ecsTaskExecutionRole",
+        "ContainerDefinitions": [
+          { 
+            "PortMappings": [
+              {"ContainerPort": 8000}
+            ],
+            "Name": "BlogTaskCF",
+            "EntryPoint": ["/home/app/web/entrypoint.prod.sh"],
+            "Environment": [
+              {"Name": "DEBUG", "Value": {"Ref": "DjangoDebugMode"} },
+              {"Name": "SECRET_KEY", "Value": {"Ref": "DjangoSecretKey"} },
+              {"Name": "DJANGO_ALLOWED_HOSTS", "Value": "*"},
+              {"Name": "DJANGO_SETTINGS_MODULE", "Value": "blog_project.settings.production"},
+              {"Name": "SQL_ENGINE", "Value": "django.db.backends.postgresql"},
+              {"Name": "SQL_DATABASE", "Value": {"Fn::ImportValue": "ECSRDSSTACK-INITIALDB"} },
+              {"Name": "SQL_USER", "Value": "postgres"},
+              {"Name": "SQL_PASSWORD", "Value": "postgres"},
+              {"Name": "SQL_HOST", "Value": {"Fn::ImportValue":"ECSRDSSTACK-ENDPOINT"} },
+              {"Name": "SQL_PORT", "Value": {"Fn::ImportValue":"ECSRDSSTACK-PORT"} },
+              {"Name": "DJANGO_SUPERUSER_PASSWORD", "Value": {"Ref": "DjangoSuperUserPassword"} },
+              {"Name": "DJANGO_SUPERUSER_EMAIL", "Value": {"Ref": "DjangoSuperUserEmail"} },
+              {"Name": "DJANGO_SUPERUSER_USERNAME", "Value": {"Ref": "DjangoSuperUserUsername"} },
+              {"Name": "AWS_STORAGE_BUCKET_NAME", "Value": {"Fn::ImportValue": "ECSS3STACK-S3BUCKETID"} },
+              {"Name": "USE_S3", "Value": {"Ref": "useS3"} },
+              {"Name": "DATABASE", "Value": "postgres"},
+            ],
+            "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project:v5.0",
+            "MountPoints": [
+              {"ContainerPath": "/home/app/web/media", "SourceVolume": "media_volume"},
+              {"ContainerPath": "/home/app/web/static", "SourceVolume": "static_volume"},
+            ],
+            "WorkingDirectory": "/home/app/web",
+            "LogConfiguration": {
+              "LogDriver": "awslogs",
+              "Options":{
+                "awslogs-group":{
+                  "Ref":"CloudwatchLogsGroup"
+                },
+                "awslogs-region":{
+                  "Ref":"AWS::Region"
+                },
+                "awslogs-stream-prefix":"ecs-demo-app"
+              }
+            },
+          }
+        ]
+      }    
+    }
+  },
+  "Outputs": {}
+}

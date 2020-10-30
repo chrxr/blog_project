@@ -1,0 +1,98 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "RDS for ECS",
+  "Parameters": {
+    "DbMasterUsername": {
+      "Type": "String",
+      "Description": "The master username for the RDS instance",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern": "[a-zA-Z0-9]*",
+      "ConstraintDescription": "must contain only alphanumeric characters."
+    },
+    "DbMasterPassword": {
+      "NoEcho": "true",
+      "Type": "String",
+      "Description": "The master password for the RDS instance",
+      "MinLength": "8",
+      "MaxLength": "41",
+      "AllowedPattern": "[a-zA-Z0-9]*",
+      "ConstraintDescription": "must contain only alphanumeric characters."
+    },
+    "InitialDbName": {
+      "Type": "String",
+      "Description": "The name of the initial DB"
+    },
+    "DbAllocatedStorage": {
+        "Default": "5",
+        "Description": "The size of the database (GiB)",
+        "Type": "Number",
+        "MinValue": "5",
+        "MaxValue": "1024"
+    },
+  },
+  "Metadata": {},
+  "Resources": {
+
+    "RdsSubnetGroup": {
+      "Type" : "AWS::RDS::DBSubnetGroup",
+      "Properties" : {
+        "DBSubnetGroupDescription" : "SubnetGroup for ecsRDS",
+        "DBSubnetGroupName" : "EcsRdsSubnetGroup",
+        "SubnetIds" : [ 
+          {"Fn::ImportValue" : "ECSNETWORK-PUBSUB1ID"}, 
+          {"Fn::ImportValue" : "ECSNETWORK-PUBSUB2ID"}
+        ]
+      }
+    },
+    
+    "EcsRDS": {
+      "Type": "AWS::RDS::DBInstance",
+      "Properties": {
+        "AllocatedStorage": {"Ref": "DbAllocatedStorage"},
+        "DBInstanceClass": "db.t3.micro",
+        "Engine": "postgres",
+        "MasterUsername": { "Ref" : "DbMasterUsername" },
+        "MasterUserPassword": { "Ref" : "DbMasterPassword" },
+        "DBName": { "Ref" : "InitialDbName" },
+        "DBSubnetGroupName": {"Ref": "RdsSubnetGroup"},
+        "Port": "5432",
+        "VPCSecurityGroups": [
+          {"Fn::ImportValue" : "ECSSGSTACK-RDSECURITYGROUP"}
+        ]
+      } 
+    },
+
+
+  },
+  "Outputs": {
+    "RdsId": {
+      "Description" : "The ID of the RDS for ECS",
+      "Value" : { "Ref" : "EcsRDS" },
+      "Export" : {
+        "Name" : "ECSRDSSTACK-RDSID"
+      }
+    },
+    "RdsEndpoint": {
+      "Description": "The endpoint for the RDS instance",
+      "Value": { "Fn::GetAtt" : [ "EcsRDS", "Endpoint.Address" ] },
+      "Export" : {
+        "Name" : "ECSRDSSTACK-ENDPOINT"
+      }
+    },
+    "RdsPort": {
+      "Description": "The port for the RDS instance",
+      "Value": { "Fn::GetAtt" : [ "EcsRDS", "Endpoint.Port" ] },
+      "Export" : {
+        "Name" : "ECSRDSSTACK-PORT"
+      }
+    },
+    "InitialDbNameExport": {
+      "Description": "The initial DB name",
+      "Value": { "Ref": "InitialDbName"},
+      "Export" : {
+        "Name" : "ECSRDSSTACK-INITIALDB"
+      }
+    }
+  }
+}

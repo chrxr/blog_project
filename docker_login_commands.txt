@@ -1,0 +1,7 @@
+aws ecr get-login-password --region us-east-1 | docker login --username AWS --password-stdin https://046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project
+
+
+docker login --username AWS --password-stdin 046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project
+
+
+docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project

@@ -1,0 +1,34 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Route 53 configuration for chrxr.com",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    "ChrxrHostedZone":{
+      "Type" : "AWS::Route53::HostedZone",
+      "Properties" : {
+        "Name" : "chrxr.com",
+      }
+    },
+    "ChrxrRecordSetGroup": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": {"Ref": "ChrxrHostedZone"},
+        "RecordSets":[
+          {
+            "Name": "chrxr.com",
+            "Type": "A",
+            "TTL": "900",
+            "AliasTarget": {
+              "HostedZoneId" : { "Fn::GetAtt" : ["myELB", "CanonicalHostedZoneID"] },
+              "DNSName" : { "Fn::GetAtt" : ["myELB","DNSName"] }
+            }
+          }
+        ]
+      }
+    }
+    
+
+  },
+  "Outputs": {}
+}

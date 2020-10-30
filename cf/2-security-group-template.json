@@ -1,0 +1,91 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Security groups for ECS, RDS etc.",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+
+    "LoadBalancerSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for Load Balancer for ECS",
+        "GroupName": "ECSLoadBalancerSecurityGroup",
+        "Tags": [{"Key": "Name", "Value": "SG for ECS ELB"}],
+        "VpcId": {"Fn::ImportValue" : "ECSNETWORK-VPCID"}, 
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": "80",
+            "ToPort": "80",
+            "IpProtocol": "tcp"
+          },
+        ]
+      }  
+    },
+
+    "ECSTaskSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for ECS task",
+        "GroupName": "ECSTaskSecurityGroup",
+        "Tags": [{"Key": "Name", "Value": "ECS Task SG"}],
+        "VpcId": {"Fn::ImportValue" : "ECSNETWORK-VPCID"},
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": "8000",
+            "ToPort": "8000",
+            "IpProtocol": "tcp"
+          },
+          {
+            "SourceSecurityGroupId": {"Ref": "LoadBalancerSecurityGroup"},
+            "FromPort": "8000",
+            "ToPort": "8000",
+            "IpProtocol": "tcp"
+          }
+        ]
+      }
+    },   
+
+    "RDSSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for ECS RDS",
+        "GroupName": "RDSSecurityGroup",
+        "Tags": [{"Key": "Name", "Value": "SG for ECS RDS"}],
+        "VpcId": {"Fn::ImportValue" : "ECSNETWORK-VPCID"},
+        "SecurityGroupIngress": [
+          {
+            "SourceSecurityGroupId": {"Ref": "ECSTaskSecurityGroup"},
+            "FromPort": "5432",
+            "ToPort": "5432",
+            "IpProtocol": "tcp"
+          }
+        ]
+      }
+    },
+  },
+  "Outputs": {
+    "RDSSecurityGroupId": {
+      "Description" : "The ID of the VPC",
+      "Value" : { "Ref" : "RDSSecurityGroup" },
+      "Export" : {
+        "Name" : "ECSSGSTACK-RDSECURITYGROUP"
+      }
+    },
+    "ECSTaskSecurityGroupId": {
+      "Description" : "The ID of the VPC",
+      "Value" : { "Ref" : "ECSTaskSecurityGroup" },
+      "Export" : {
+        "Name" : "ECSSGSTACK-ECSTASKSECURITYGROUP"
+      }
+    },
+    "LoadBalancerSecurityGroupID": {
+      "Description" : "The ID of the VPC",
+      "Value" : { "Ref" : "LoadBalancerSecurityGroup" },
+      "Export" : {
+        "Name" : "ECSSGSTACK-LOADBALANCERSECURITYGROUPID"
+      }
+    },
+  }
+}

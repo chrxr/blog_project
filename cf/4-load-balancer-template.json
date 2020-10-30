@@ -1,0 +1,137 @@
+    {
+      "AWSTemplateFormatVersion": "2010-09-09",
+      "Description": "Load Balancer for ECS",
+      "Parameters": {},
+      "Metadata": {},
+      "Resources": {
+
+        "EcsLoadBalancer": {
+          "Type": "AWS::ElasticLoadBalancingV2::LoadBalancer",
+          "Properties": {
+            "SecurityGroups": [
+              {"Fn::ImportValue" : "ECSSGSTACK-LOADBALANCERSECURITYGROUPID"}
+            ],
+            "IpAddressType": "ipv4",
+            "Name": "EcsLoadBalancer",
+            "Subnets": [
+              {"Fn::ImportValue" : "ECSNETWORK-PUBSUB1ID"}, 
+              {"Fn::ImportValue" : "ECSNETWORK-PUBSUB2ID"}
+            ],
+            "Type": "application"
+          }
+        },
+      
+        "EcsTargetGroup": {
+          "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
+          "Properties": {
+            "Name": "EcsTargetGroup",
+            "Port": "80",
+            "VpcId": {"Fn::ImportValue" : "ECSNETWORK-VPCID"},
+            "TargetType": "ip",
+            "Protocol": "HTTP",
+          }
+        },
+
+        "AlbListener":{
+          "Type":"AWS::ElasticLoadBalancingV2::Listener",
+          "Properties":{
+            "DefaultActions":[
+              {
+                "Type":"forward",
+                "TargetGroupArn":{
+                  "Ref":"EcsTargetGroup"
+                }
+              }
+            ],
+            "LoadBalancerArn":{
+              "Ref":"EcsLoadBalancer"
+            },
+            "Port":"80",
+            "Protocol":"HTTP"
+          }
+        },
+
+        "EcsAlbListenerRule":{
+          "Type":"AWS::ElasticLoadBalancingV2::ListenerRule",
+          "DependsOn":"AlbListener",
+          "Properties":{
+            "Actions":[
+              {
+                "Type":"forward",
+                "TargetGroupArn":{
+                  "Ref":"EcsTargetGroup"
+                }
+              }
+            ],
+            "Conditions":[
+              {
+                "Field":"path-pattern",
+                "Values":[
+                  "/"
+                ]
+              }
+            ],
+            "ListenerArn":{
+              "Ref":"AlbListener"
+            },
+            "Priority":1
+          }
+        },
+        
+        "AlbHttpsListener":{
+          "Type":"AWS::ElasticLoadBalancingV2::Listener",
+          "Properties":{
+            "DefaultActions":[
+              {
+                "Type":"forward",
+                "TargetGroupArn":{
+                  "Ref":"EcsTargetGroup"
+                }
+              }
+            ],
+            "LoadBalancerArn":{
+              "Ref":"EcsLoadBalancer"
+            },
+            "Port":"443",
+            "Protocol":"HTTPS"
+          }
+        },
+
+        "EcsAlbHttpsListenerRule":{
+          "Type":"AWS::ElasticLoadBalancingV2::ListenerRule",
+          "DependsOn":"AlbListener",
+          "Properties":{
+            "Actions":[
+              {
+                "Type":"forward",
+                "TargetGroupArn":{
+                  "Ref":"EcsTargetGroup"
+                }
+              }
+            ],
+            "Conditions":[
+              {
+                "Field":"path-pattern",
+                "Values":[
+                  "/"
+                ]
+              }
+            ],
+            "ListenerArn":{
+              "Ref":"AlbHttpsListener"
+            },
+            "Priority":1
+          }
+        },
+
+      },
+      "Outputs": {
+        "EcsTargetGroupId": {
+          "Description" : "The ID of target group for the ECS service",
+          "Value" : { "Ref" : "EcsTargetGroup" },
+          "Export" : {
+            "Name" : "ECSALBSTACK-ECSTARGETGROUPID"
+          }
+        },
+      }
+    }

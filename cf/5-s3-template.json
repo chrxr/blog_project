@@ -1,0 +1,46 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "S3 for ECS",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    
+    "WebsiteS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "chrxr-static-media-bucket",
+        "AccessControl": "PublicRead",
+        "CorsConfiguration": {
+            "CorsRules": [
+              {
+                "AllowedHeaders": [
+                    "*"
+                ],
+                "AllowedMethods": [
+                    "GET"
+                ],
+                "AllowedOrigins": [
+                    "*"
+                ],
+                "ExposedHeaders": [
+                    "Date"
+                ],
+                "Id": "myCORSRuleId1",
+                "MaxAge": "3600"
+              }
+            ]
+          },
+        "Tags": [{"Key": "Name", "Value": "Django static/media assets"}]
+      }
+    },
+  },
+  "Outputs": {
+    "S3BucketId": {
+      "Description": "Id of S3 bucket for Django static/media assets",
+      "Value": {"Ref": "WebsiteS3Bucket"},
+      "Export" : {
+        "Name" : "ECSS3STACK-S3BUCKETID"
+      }
+    }
+  }
+}

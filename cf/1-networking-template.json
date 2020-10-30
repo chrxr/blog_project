@@ -29,7 +29,7 @@
         "VpcId": {"Ref": "EcsVpc"}
       }
     },
-    
+
     "PublicSubnet2": {
       "Type": "AWS::EC2::Subnet",
       "Properties": {
@@ -70,7 +70,7 @@
         }
     },
 
-    "IgRoute": {
+    "IgRoute": {  
       "Type": "AWS::EC2::Route",
       "Properties": {
         "DestinationCidrBlock": "0.0.0.0/0",
@@ -96,39 +96,46 @@
     }
   },
   "Outputs": {
+    "StackId": {
+      "Description" : "The ID of the networking stack",
+      "Value" : {"Fn::Sub": "${AWS::StackName}"},
+      "Export" : {
+        "Name" : {"Fn::Sub": "EcsNetworkingStackName" }
+      }
+    },
     "EcsVpcId": {
       "Description" : "The ID of the VPC",
       "Value" : { "Ref" : "EcsVpc" },
       "Export" : {
-        "Name" : {"Fn::Sub": "${AWS::StackName}-VPCID" }
+        "Name" : "ECSNETWORK-VPCID"
       }
     },
     "PublicSubnet1Id": {
       "Description" : "The ID of public subnet 1",
       "Value" : { "Ref" : "PublicSubnet1" },
       "Export" : {
-        "Name" : {"Fn::Sub": "${AWS::StackName}-PUBSUB1ID" }
+        "Name" : "ECSNETWORK-PUBSUB1ID"
       }
     },
     "PublicSubnet2Id": {
       "Description" : "The ID of public subnet 1",
       "Value" : { "Ref" : "PublicSubnet2" },
       "Export" : {
-        "Name" : {"Fn::Sub": "${AWS::StackName}-PUBSUB2ID" }
+        "Name" : "ECSNETWORK-PUBSUB2ID"
       }
     },
     "IgRouteTableId": {
       "Description" : "The ID of ig route table",
       "Value" : { "Ref" : "IgRouteTable" },
       "Export" : {
-        "Name" : {"Fn::Sub": "${AWS::StackName}-IGRTID" }
+        "Name" : "ECSNETWORK-IGRTID"
       }
     },
     "InternetGatewayId": {
       "Description" : "The ID of the internet gateway",
       "Value" : { "Ref" : "InternetGateway" },
       "Export" : {
-        "Name" : {"Fn::Sub": "${AWS::StackName}-IGID" }
+        "Name" : "ECSNETWORK-IGID"
       }
     }
   }
