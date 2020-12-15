@@ -1,0 +1,71 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "RDS for ECS",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+
+    "EcsSslCertificate" : {
+      "Type" : "AWS::CertificateManager::Certificate",
+      "Properties" : {
+        "DomainName" : "chrxr.com",
+        "ValidationMethod" : "DNS",
+      }
+    },
+
+    "AlbHttpsListener":{
+      "Type":"AWS::ElasticLoadBalancingV2::Listener",
+      "Properties":{
+        "Certificates" : [
+          { "CertificateArn": { "Ref" : "EcsSslCertificate" } }
+        ],
+        "DefaultActions":[
+          {
+            "Type":"forward",
+            "TargetGroupArn":{
+              "Fn::ImportValue": "ECSALBSTACK-ECSTARGETGROUPID" 
+            }
+          }
+        ],
+        "LoadBalancerArn":{
+          "Fn::ImportValue": "ECSALBSTACK-LOADBALANCERID" 
+        },
+        "Port":"443",
+        "Protocol":"HTTPS"
+      }
+    },
+
+    "EcsAlbHttpsListenerRule":{
+      "Type":"AWS::ElasticLoadBalancingV2::ListenerRule",
+      "DependsOn":"AlbHttpsListener",
+      "Properties":{
+        "Actions":[
+          {
+            "Type":"forward",
+            "TargetGroupArn":{
+              "Fn::ImportValue" : "ECSALBSTACK-ECSTARGETGROUPID"
+            }
+          }
+        ],  
+        "Conditions":[
+          {
+            "Field":"path-pattern",
+            "Values":[
+              "/"
+            ]
+          }
+        ],
+        "ListenerArn":{
+          "Ref":"AlbHttpsListener"
+        },
+        "Priority":1
+      }
+    },
+
+
+  },
+  "Outputs": {}
+}
+
+
+       

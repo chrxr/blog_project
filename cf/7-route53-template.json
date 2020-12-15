@@ -14,14 +14,13 @@
       "Type": "AWS::Route53::RecordSetGroup",
       "Properties": {
         "HostedZoneId": {"Ref": "ChrxrHostedZone"},
-        "RecordSets":[
+        "RecordSets":[  
           {
             "Name": "chrxr.com",
             "Type": "A",
-            "TTL": "900",
             "AliasTarget": {
-              "HostedZoneId" : { "Fn::GetAtt" : ["myELB", "CanonicalHostedZoneID"] },
-              "DNSName" : { "Fn::GetAtt" : ["myELB","DNSName"] }
+              "HostedZoneId" : { "Fn::ImportValue" : "ECSALBSTACK-HOSTEDZONEID" },
+              "DNSName" : { "Fn::ImportValue" : "ECSALBSTACK-DNSNAME" }
             }
           }
         ]

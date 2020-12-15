@@ -77,52 +77,6 @@
             "Priority":1
           }
         },
-        
-        "AlbHttpsListener":{
-          "Type":"AWS::ElasticLoadBalancingV2::Listener",
-          "Properties":{
-            "DefaultActions":[
-              {
-                "Type":"forward",
-                "TargetGroupArn":{
-                  "Ref":"EcsTargetGroup"
-                }
-              }
-            ],
-            "LoadBalancerArn":{
-              "Ref":"EcsLoadBalancer"
-            },
-            "Port":"443",
-            "Protocol":"HTTPS"
-          }
-        },
-
-        "EcsAlbHttpsListenerRule":{
-          "Type":"AWS::ElasticLoadBalancingV2::ListenerRule",
-          "DependsOn":"AlbListener",
-          "Properties":{
-            "Actions":[
-              {
-                "Type":"forward",
-                "TargetGroupArn":{
-                  "Ref":"EcsTargetGroup"
-                }
-              }
-            ],
-            "Conditions":[
-              {
-                "Field":"path-pattern",
-                "Values":[
-                  "/"
-                ]
-              }
-            ],
-            "ListenerArn":{
-              "Ref":"AlbHttpsListener"
-            },
-            "Priority":1
-          }
-        },
 
       },
       "Outputs": {
@@ -131,6 +85,27 @@
           "Value" : { "Ref" : "EcsTargetGroup" },
           "Export" : {
             "Name" : "ECSALBSTACK-ECSTARGETGROUPID"
+          }
+        },
+        "EcsLoadBalancerId": {
+          "Description" : "The ID for the load balancer itself",
+          "Value" : { "Ref" : "EcsLoadBalancer" },
+          "Export" : { 
+            "Name" : "ECSALBSTACK-LOADBALANCERID"
+          }
+        },
+        "EcsLoadBalancerHzId": {
+          "Description" : "The CanonicalHostedZoneID of the load balancer",
+          "Value" : { "Fn::GetAtt" : ["EcsLoadBalancer", "CanonicalHostedZoneID"] },
+          "Export" : {
+            "Name" : "ECSALBSTACK-HOSTEDZONEID"
+          }
+        },
+        "EcsLoadBalancerDnsName": {
+          "Description" : "The CanonicalHostedZoneID of the load balancer",
+          "Value" : { "Fn::GetAtt" : ["EcsLoadBalancer", "DNSName"] },
+          "Export" : {
+            "Name" : "ECSALBSTACK-DNSNAME"
           }
         },
       }
