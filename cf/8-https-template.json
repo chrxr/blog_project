@@ -9,7 +9,7 @@
       "Type" : "AWS::CertificateManager::Certificate",
       "Properties" : {
         "DomainName" : "chrxr.com",
-        "ValidationMethod" : "DNS",
+        "ValidationMethod" : "DNS"
       }
     },
 
@@ -30,14 +30,13 @@
         "LoadBalancerArn":{
           "Fn::ImportValue": "ECSALBSTACK-LOADBALANCERID" 
         },
-        "Port":"443",
+        "Port": 443,
         "Protocol":"HTTPS"
       }
     },
 
     "EcsAlbHttpsListenerRule":{
       "Type":"AWS::ElasticLoadBalancingV2::ListenerRule",
-      "DependsOn":"AlbHttpsListener",
       "Properties":{
         "Actions":[
           {
@@ -60,7 +59,7 @@
         },
         "Priority":1
       }
-    },
+    }
 
 
   },

@@ -9,7 +9,7 @@
     },
     "DjangoSecretKey": {
       "Type": "String",
-      "MinLength": "15",
+      "MinLength": 15,
       "Description": "Secret key for Django"
     },
     "DjangoSuperUserUsername": {
@@ -18,7 +18,7 @@
     },
     "DjangoSuperUserPassword": {
       "Type": "String",
-      "NoEcho": "true",
+      "NoEcho": true,
       "Description": "Password for Django superuser"
     },
     "DjangoSuperUserEmail": {
@@ -84,9 +84,8 @@
             }
           ]
         },
-        "Description" : "IAM policy for Django container to push static and media assets to S3",
         "ManagedPolicyArns" : [ {"Ref": "EcsS3IamPolicy"} ],
-        "RoleName" : "ECStoS3Role",
+        "RoleName" : "ECStoS3Role"
       }
     },
 
@@ -103,7 +102,7 @@
         "Cluster": {"Ref": "EcsCluster"},
         "LaunchType": "FARGATE",
         "NetworkConfiguration": {
-          "AwsVpcConfiguration": {
+          "AwsvpcConfiguration": {
             "AssignPublicIp": "ENABLED",
             "Subnets": [
               {"Fn::ImportValue" : "ECSNETWORK-PUBSUB1ID"}, 
@@ -116,13 +115,13 @@
         },
         "Tags": [{"Key": "Name", "Value": "EcsCfService"}],
         "ServiceName": "EcsCfService",
-        "DesiredCount": "1",
+        "DesiredCount": 1,
         "TaskDefinition": {"Ref": "EcsCfTaskDef"},
         "LoadBalancers": [
           {
             "ContainerName" : "BlogTaskCF",
-            "ContainerPort" : "8000",
-            "TargetGroupArn" : {"Fn::ImportValue": "ECSALBSTACK-ECSTARGETGROUPID"},
+            "ContainerPort" : 8000,
+            "TargetGroupArn" : {"Fn::ImportValue": "ECSALBSTACK-ECSTARGETGROUPID"}
           }
         ]
       }
@@ -183,12 +182,12 @@
               {"Name": "DJANGO_SUPERUSER_USERNAME", "Value": {"Ref": "DjangoSuperUserUsername"} },
               {"Name": "AWS_STORAGE_BUCKET_NAME", "Value": {"Fn::ImportValue": "ECSS3STACK-S3BUCKETID"} },
               {"Name": "USE_S3", "Value": {"Ref": "useS3"} },
-              {"Name": "DATABASE", "Value": "postgres"},
+              {"Name": "DATABASE", "Value": "postgres"}
             ],
             "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project:v5.0",
             "MountPoints": [
               {"ContainerPath": "/home/app/web/media", "SourceVolume": "media_volume"},
-              {"ContainerPath": "/home/app/web/static", "SourceVolume": "static_volume"},
+              {"ContainerPath": "/home/app/web/static", "SourceVolume": "static_volume"}
             ],
             "WorkingDirectory": "/home/app/web",
             "LogConfiguration": {
@@ -202,7 +201,7 @@
                 },
                 "awslogs-stream-prefix":"ecs-demo-app"
               }
-            },
+            }
           }
         ]
       }    

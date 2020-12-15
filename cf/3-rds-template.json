@@ -5,17 +5,17 @@
     "DbMasterUsername": {
       "Type": "String",
       "Description": "The master username for the RDS instance",
-      "MinLength": "8",
-      "MaxLength": "41",
+      "MinLength": 8,
+      "MaxLength": 41,
       "AllowedPattern": "[a-zA-Z0-9]*",
       "ConstraintDescription": "must contain only alphanumeric characters."
     },
     "DbMasterPassword": {
-      "NoEcho": "true",
+      "NoEcho": true,
       "Type": "String",
       "Description": "The master password for the RDS instance",
-      "MinLength": "8",
-      "MaxLength": "41",
+      "MinLength": 8,
+      "MaxLength": 41,
       "AllowedPattern": "[a-zA-Z0-9]*",
       "ConstraintDescription": "must contain only alphanumeric characters."
     },
@@ -24,12 +24,12 @@
       "Description": "The name of the initial DB"
     },
     "DbAllocatedStorage": {
-        "Default": "5",
+        "Default": 5,
         "Description": "The size of the database (GiB)",
         "Type": "Number",
-        "MinValue": "5",
-        "MaxValue": "1024"
-    },
+        "MinValue": 5,
+        "MaxValue": 1024
+    }
   },
   "Metadata": {},
   "Resources": {
@@ -61,7 +61,7 @@
           {"Fn::ImportValue" : "ECSSGSTACK-RDSECURITYGROUP"}
         ]
       } 
-    },
+    }
 
 
   },

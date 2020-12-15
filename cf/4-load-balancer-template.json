@@ -25,10 +25,10 @@
           "Type": "AWS::ElasticLoadBalancingV2::TargetGroup",
           "Properties": {
             "Name": "EcsTargetGroup",
-            "Port": "80",
+            "Port": 80,
             "VpcId": {"Fn::ImportValue" : "ECSNETWORK-VPCID"},
             "TargetType": "ip",
-            "Protocol": "HTTP",
+            "Protocol": "HTTP"
           }
         },
 
@@ -46,14 +46,13 @@
             "LoadBalancerArn":{
               "Ref":"EcsLoadBalancer"
             },
-            "Port":"80",
+            "Port": 80,
             "Protocol":"HTTP"
           }
         },
 
         "EcsAlbListenerRule":{
           "Type":"AWS::ElasticLoadBalancingV2::ListenerRule",
-          "DependsOn":"AlbListener",
           "Properties":{
             "Actions":[
               {
@@ -76,7 +75,7 @@
             },
             "Priority":1
           }
-        },
+        }
 
       },
       "Outputs": {
@@ -107,6 +106,6 @@
           "Export" : {
             "Name" : "ECSALBSTACK-DNSNAME"
           }
-        },
+        }
       }
     }

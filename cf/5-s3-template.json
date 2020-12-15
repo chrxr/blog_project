@@ -26,13 +26,13 @@
                     "Date"
                 ],
                 "Id": "myCORSRuleId1",
-                "MaxAge": "3600"
+                "MaxAge": 3600
               }
             ]
           },
         "Tags": [{"Key": "Name", "Value": "Django static/media assets"}]
       }
-    },
+    }
   },
   "Outputs": {
     "S3BucketId": {

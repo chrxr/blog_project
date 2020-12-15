@@ -7,7 +7,7 @@
     "ChrxrHostedZone":{
       "Type" : "AWS::Route53::HostedZone",
       "Properties" : {
-        "Name" : "chrxr.com",
+        "Name" : "chrxr.com"
       }
     },
     "ChrxrRecordSetGroup": {

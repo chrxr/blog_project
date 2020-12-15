@@ -15,16 +15,16 @@
         "SecurityGroupIngress": [
           {
             "CidrIp": "0.0.0.0/0",
-            "FromPort": "80",
-            "ToPort": "80",
+            "FromPort": 80,
+            "ToPort": 80,
             "IpProtocol": "tcp"
           },
           {
             "CidrIp": "0.0.0.0/0",
-            "FromPort": "443",
-            "ToPort": "443",
+            "FromPort": 443,
+            "ToPort": 443,
             "IpProtocol": "tcp"
-          },
+          }
         ]
       }  
     },
@@ -39,14 +39,14 @@
         "SecurityGroupIngress": [
           {
             "CidrIp": "0.0.0.0/0",
-            "FromPort": "8000",
-            "ToPort": "8000",
+            "FromPort": 8000,
+            "ToPort": 8000,
             "IpProtocol": "tcp"
           },
           {
             "SourceSecurityGroupId": {"Ref": "LoadBalancerSecurityGroup"},
-            "FromPort": "8000",
-            "ToPort": "8000",
+            "FromPort": 8000,
+            "ToPort": 8000,
             "IpProtocol": "tcp"
           }
         ]
@@ -63,13 +63,13 @@
         "SecurityGroupIngress": [
           {
             "SourceSecurityGroupId": {"Ref": "ECSTaskSecurityGroup"},
-            "FromPort": "5432",
-            "ToPort": "5432",
+            "FromPort": 5432,
+            "ToPort": 5432,
             "IpProtocol": "tcp"
           }
         ]
       }
-    },
+    }
   },
   "Outputs": {
     "RDSSecurityGroupId": {
@@ -92,6 +92,6 @@
       "Export" : {
         "Name" : "ECSSGSTACK-LOADBALANCERSECURITYGROUPID"
       }
-    },
+    }
   }
 }
