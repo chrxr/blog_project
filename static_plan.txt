@@ -1,0 +1,1 @@
+* build docker image which creates a static version of the website and copies it to S3

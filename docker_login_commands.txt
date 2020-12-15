@@ -5,3 +5,5 @@ docker login --username AWS --password-stdin 046080352995.dkr.ecr.us-east-1.amaz
 
 
 docker login -u AWS -p $(aws ecr get-login-password --region us-east-1) 046080352995.dkr.ecr.us-east-1.amazonaws.com/blog-project
+
+docker-compose -f docker-compose-dev.yml up -d --build
