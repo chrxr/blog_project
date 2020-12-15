@@ -36,3 +36,5 @@ wheel
 gunicorn
 boto3
 django-storages
+django-bakery
+wagtail-bakery

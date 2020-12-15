@@ -52,7 +52,9 @@ INSTALLED_APPS = (
     'home',
     'blog',
     'blog_feed',
-    'storages'
+    'storages',
+    'bakery',
+    'wagtailbakery',
 )
 
 MIDDLEWARE = [
@@ -158,6 +160,13 @@ else:
   MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
   MEDIA_URL = '/media/'
 
+# Static site settings
+
+BUILD_DIR = os.path.join(BASE_DIR, 'staticsite')
+
+BAKERY_VIEWS = (
+    'wagtailbakery.views.AllPublishedPagesView',
+)
 
 # Wagtail settings
 

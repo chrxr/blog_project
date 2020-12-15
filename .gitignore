@@ -17,3 +17,4 @@ backup-*.sql
 *.pgsql
 /Env/
 .env.*
+staticsite/
