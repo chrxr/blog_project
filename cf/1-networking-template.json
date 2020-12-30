@@ -9,7 +9,9 @@
       "Properties": {
         "CidrBlock": "10.1.0.0/16",
         "InstanceTenancy": "default",
-        "Tags": [{"Key": "Name", "Value": "EcsVpc"}]
+        "Tags": [{"Key": "Name", "Value": "EcsVpc"}],
+        "EnableDnsHostnames" : true,
+        "EnableDnsSupport" : true
       }
     },
 

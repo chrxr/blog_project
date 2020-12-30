@@ -1,1 +1,37 @@
 * build docker image which creates a static version of the website and copies it to S3
+
+Required CFs:
+
+* S3
+* ECS task
+* EFS file system
+* EFS mount target
+* EFS security group (inbound on NFS from ECS security group)
+
+* 1 - Networking template (as is) - DONE
+* 2 - Security group template: - DONE
+  * ECS service security group - inbound from the internet, outbount all
+  * EFS security group - inbound on NFS from ECS service security group
+* 3 - S3 template - DONE
+  * Change to intelligent tiering
+* 4 - EFS - DONE
+  * file system
+  * mount target
+* 5 - ECS
+  * ECS cluster
+  * ECS service
+  * ECS task definition
+    * Need to change docker container to mount the EFS file system for the database
+* 6 - CloudFront?
+* 7 - route53
+  * Pointing chrxr.com at CloudFront endpoint
+* 8 - SSL? 
+  * Do we need this for CloudFront?
+
+
+  Hard faught lessons:
+
+  * Version of platform must be 1.4
+  * Must have DNS resolution turned on in VPC
+  * Need an access point
+  * 

@@ -1,0 +1,75 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "RDS for ECS",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    "StaticEfsFileSystem": {
+      "Type": "AWS::EFS::FileSystem",
+      "Properties": {
+        "Encrypted": false,
+        "BackupPolicy": {
+          "Status": "ENABLED"
+        },
+        "ThroughputMode": "bursting",
+        "PerformanceMode": "generalPurpose"
+      }
+    },
+    "StaticEfsMountTarget1": {
+      "Type": "AWS::EFS::MountTarget",
+      "Properties": {
+        "FileSystemId": {"Ref": "StaticEfsFileSystem"},
+        "SubnetId": {"Fn::ImportValue": "ECSNETWORK-PUBSUB1ID"},
+        "SecurityGroups": [
+          {"Fn::ImportValue" : "STATICS3STACK-EFSECURITYGROUP"}
+        ]
+      }
+    },
+    "StaticEfsMountTarget2": {
+      "Type": "AWS::EFS::MountTarget",
+      "Properties": {
+        "FileSystemId": {"Ref": "StaticEfsFileSystem"},
+        "SubnetId": {"Fn::ImportValue": "ECSNETWORK-PUBSUB2ID"},
+        "SecurityGroups": [
+          {"Fn::ImportValue" : "STATICS3STACK-EFSECURITYGROUP"}
+        ]
+      }
+    },
+    "StaticEfsAccessPoint": {
+      "Type" : "AWS::EFS::AccessPoint",
+      "Properties" : {
+        "AccessPointTags" : [ {"Key": "Name", "Value": "ECS access point"} ],
+        "FileSystemId" : {"Ref": "StaticEfsFileSystem"},
+        "PosixUser" : {
+          "Gid": "123454",
+          "Uid": "123454"
+        },
+        "RootDirectory": {
+          "CreationInfo": {
+            "OwnerGid": "123454",
+            "OwnerUid": "123454",
+            "Permissions": "0750"
+          },
+          "Path" : "/efs"
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "EfsFileSystemId": {
+      "Description": "Id of EFS file system for static website",
+      "Value": {"Ref": "StaticEfsFileSystem"},
+      "Export" : {
+        "Name" : "STATICS3STACK-EFSFILESYSTEMID"
+      }
+    },
+    "EfsAccessPointId": {
+      "Description": "Id of EFS access point used for ECS",
+      "Value": {"Ref": "StaticEfsAccessPoint"},
+      "Export" : {
+        "Name" : "STATICS3STACK-EFSACCESSPOINTID"
+      }
+    }
+  }
+}
+

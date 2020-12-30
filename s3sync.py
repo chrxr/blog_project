@@ -12,7 +12,6 @@ def defineContentType(suffix):
     contentType = "text/html"
   return contentType
 
-
 s3 = boto3.client('s3')
 staticFolder = Path("staticsite")
 pathList = [['staticsite/index.html', 'index.html', 'text/html']]
@@ -33,3 +32,5 @@ for x in staticFolder.iterdir():
 
 for path in pathList:
   s3.upload_file(path[0], "chrxr-static-website-bucket", path[1], ExtraArgs={'ContentType': path[2]})
+
+print("Uploaded files to S3")

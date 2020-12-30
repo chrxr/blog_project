@@ -1,0 +1,82 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "S3 for static website",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    
+    "StaticWebsiteS3Bucket": {
+      "Type": "AWS::S3::Bucket",
+      "Properties": {
+        "BucketName": "chrxr-static-website-bucket",
+        "AccessControl": "PublicRead",
+        "CorsConfiguration": {
+            "CorsRules": [
+              {
+                "AllowedHeaders": [
+                    "*"
+                ],
+                "AllowedMethods": [
+                    "GET"
+                ],
+                "AllowedOrigins": [
+                    "*"
+                ],
+                "ExposedHeaders": [
+                    "Date"
+                ],
+                "Id": "myCORSRuleId1",
+                "MaxAge": 3600
+              }
+            ]
+          },
+        "Tags": [{"Key": "Name", "Value": "Bucket for static website"}],
+        "WebsiteConfiguration": {
+          "ErrorDocument": "error.html",
+          "IndexDocument": "index.html"
+        }
+      }
+    },
+    "StaticWebsiteS3BucketPolicy": {
+      "Type" : "AWS::S3::BucketPolicy",
+      "Properties" : {
+          "Bucket" : {"Ref": "StaticWebsiteS3Bucket"},
+          "PolicyDocument":
+            {
+              "Version": "2012-10-17",
+              "Statement": [
+                  {
+                      "Sid": "PublicReadGetObject",
+                      "Effect": "Allow",
+                      "Principal": "*",
+                      "Action": [
+                          "s3:GetObject"
+                      ],
+                      "Resource": [
+                        {"Fn::Join": [
+                          "",
+                          [
+                              "arn:aws:s3:::",
+                              {
+                                  "Ref": "StaticWebsiteS3Bucket"
+                              },
+                              "/*"
+                          ]
+                        ]}
+                      ]
+                  }
+              ]
+          }
+      }
+    }
+  },
+  "Outputs": {
+    "S3BucketId": {
+      "Description": "Id of S3 bucket for static website",
+      "Value": {"Ref": "StaticWebsiteS3Bucket"},
+      "Export" : {
+        "Name" : "STATICS3STACK-S3BUCKETID"
+      }
+    }
+  }
+}

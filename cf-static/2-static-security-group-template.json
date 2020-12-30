@@ -1,0 +1,59 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Security groups for ECS and EFS, for static website hosting",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+
+    "StaticEcsTaskSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for ECS task",
+        "GroupName": "StaticEcsTaskSecurityGroup",
+        "Tags": [{"Key": "Name", "Value": "ECS Task SG"}],
+        "VpcId": {"Fn::ImportValue" : "ECSNETWORK-VPCID"},
+        "SecurityGroupIngress": [
+          {
+            "CidrIp": "0.0.0.0/0",
+            "FromPort": 8000,
+            "ToPort": 8000,
+            "IpProtocol": "tcp"
+          }
+        ]
+      }
+    },   
+    "StaticEfsSecurityGroup": {
+      "Type": "AWS::EC2::SecurityGroup",
+      "Properties": {
+        "GroupDescription": "Security group for connecting ECS to EFS",
+        "GroupName": "StaticEfsSecurityGroup",
+        "Tags": [{"Key": "Name", "Value": "SG for ECS EFS"}],
+        "VpcId": {"Fn::ImportValue" : "ECSNETWORK-VPCID"},
+        "SecurityGroupIngress": [
+          {
+            "SourceSecurityGroupId": {"Ref": "StaticEcsTaskSecurityGroup"},
+            "FromPort": 2049,
+            "ToPort": 2049,
+            "IpProtocol": "tcp"
+          }
+        ]
+      }
+    }
+  },
+  "Outputs": {
+    "StaticEfsSecurityGroupId": {
+      "Description" : "SG ID for EFS to ECS SG",
+      "Value" : { "Ref" : "StaticEfsSecurityGroup" },
+      "Export" : {
+        "Name" : "STATICS3STACK-EFSECURITYGROUP"
+      }
+    },
+    "StaticEcsTaskSecurityGroupId": {
+      "Description" : "SG ID for ECS SG",
+      "Value" : { "Ref" : "StaticEcsTaskSecurityGroup" },
+      "Export" : {
+        "Name" : "STATICS3STACK-ECSTASKSECURITYGROUP"
+      }
+    }
+  }
+}
