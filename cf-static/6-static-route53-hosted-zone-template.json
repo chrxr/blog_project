@@ -1,0 +1,23 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Route 53 configuration for chrxr.com",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    "ChrxrHostedZone":{
+      "Type" : "AWS::Route53::HostedZone",
+      "Properties" : {
+        "Name" : "chrxr.com"
+      }
+    }
+  },
+  "Outputs": {
+    "HostedZoneId": {
+      "Description": "Id hosted zone chrxr.com",
+      "Value": {"Ref": "ChrxrHostedZone"},
+      "Export" : {
+        "Name" : "STATICS3STACK-R53HOSTEDZONE"
+      }
+    }
+  }
+}

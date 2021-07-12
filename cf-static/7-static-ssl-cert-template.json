@@ -1,0 +1,25 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "SSL cert for chrxr.com",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    "StaticSslCertificate" : {
+      "Type" : "AWS::CertificateManager::Certificate",
+      "Properties" : {
+        "DomainName" : "chrxr.com",
+        "ValidationMethod" : "DNS"
+      }
+    }
+  },
+  "Outputs": {
+    "SSLCertId": {
+      "Description": "Id for the SSL certificate for chrxr.com",
+      "Value": {"Ref": "StaticSslCertificate"},
+      "Export" : {
+        "Name" : "STATICS3STACK-SSLCERT"
+      }
+    }
+  }
+}
+

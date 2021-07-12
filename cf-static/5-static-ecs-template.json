@@ -188,7 +188,6 @@
               {"ContainerPort": 8000}
             ],
             "Name": "BlogTaskCF",
-            "EntryPoint": ["/home/app/web/entrypoint.prod.sh"],
             "Environment": [
               {"Name": "DEBUG", "Value": {"Ref": "DjangoDebugMode"} },
               {"Name": "SECRET_KEY", "Value": {"Ref": "DjangoSecretKey"} },
@@ -203,7 +202,7 @@
               {"Name": "DATABASE", "Value": "sqlite3"},
               {"Name": "USE_S3", "Value": {"Ref": "useS3"}}
             ],
-            "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/static-blog-project:v3.0",
+            "Image": "046080352995.dkr.ecr.us-east-1.amazonaws.com/static-blog-project:v6.0",
             "MountPoints": [
               {"ContainerPath": "/home/app/web/media", "SourceVolume": "media_volume"},
               {"ContainerPath": "/home/app/web/static", "SourceVolume": "static_volume"},

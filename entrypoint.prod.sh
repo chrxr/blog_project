@@ -17,6 +17,8 @@ python manage.py collectstatic --no-input --clear
 echo "Collected Static"
 python manage.py createsuperuser --noinput
 echo "Created super user"
+python s3sync.py
+echo "Synced to S3"
 gunicorn blog_project.wsgi:application --bind 0.0.0.0:8000
 
 exec "$@"

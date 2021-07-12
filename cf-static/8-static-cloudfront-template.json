@@ -1,0 +1,54 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Cloudfront for static website",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    "StaticCFDistribution": {
+      "Type": "AWS::CloudFront::Distribution",
+      "Properties": {
+        "DistributionConfig": {
+          "ViewerCertificate": {
+            "AcmCertificateArn": {"Fn::ImportValue": "STATICS3STACK-SSLCERT"},
+            "SslSupportMethod": "sni-only",
+            "MinimumProtocolVersion": "TLSv1"
+          },
+          "DefaultRootObject": "index.html",
+          "DefaultCacheBehavior": {
+            "TargetOriginId": "StaticWebsiteS3Origin",
+            "ViewerProtocolPolicy": "allow-all",
+            "CachePolicyId": "658327ea-f89d-4fab-a63d-7e88639e58f6"
+          },
+          "Enabled": true,
+          "Aliases": ["chrxr.com"],
+          "Origins": [
+            {
+              "Id": "StaticWebsiteS3Origin",
+              "CustomOriginConfig": {
+                "OriginProtocolPolicy": "match-viewer"
+              },
+              "DomainName": "chrxr-static-website-bucket.s3-website-us-east-1.amazonaws.com"
+            }
+          ]
+        }
+      }
+    }
+  },
+  "Outputs": {
+    "CloudFrontDistId": {
+      "Description": "Id for the CloudFront distribution",
+      "Value": {"Ref": "StaticCFDistribution"},
+      "Export" : {
+        "Name" : "STATICS3STACK-CLOUDFRONTDISTID"
+      }
+    },
+    "CloudFrontDistDomainName": {
+      "Description": "Domain name for the CloudFront distribution",
+      "Value": {"Fn::GetAtt": ["StaticCFDistribution", "DomainName"]},
+      "Export" : {
+        "Name" : "STATICS3STACK-CLOUDFRONTDISTDOMAINNAME"
+      }
+    }
+  }
+}
+

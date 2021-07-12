@@ -58,7 +58,7 @@ RUN pip install --upgrade pip
 RUN pip install --no-cache /wheels/*
 
 # copy entrypoint-prod.sh
-COPY ./entrypoint.prod.sh $APP_HOME
+COPY ./entrypoint.static.prod.sh $APP_HOME
 
 # copy project
 COPY . $APP_HOME

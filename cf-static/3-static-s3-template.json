@@ -77,6 +77,13 @@
       "Export" : {
         "Name" : "STATICS3STACK-S3BUCKETID"
       }
+    },
+    "S3WebsiteDomainName": {
+      "Description": "Domain name for static website in bucket",
+      "Value": {"Fn::GetAtt": ["StaticWebsiteS3Bucket", "WebsiteURL"]},
+      "Export": {
+        "Name": "STATICS3STACK-S3WEBSITEDOMAINNAME"
+      }
     }
   }
 }

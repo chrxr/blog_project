@@ -1,0 +1,27 @@
+{
+  "AWSTemplateFormatVersion": "2010-09-09",
+  "Description": "Route 53 configuration for chrxr.com",
+  "Parameters": {},
+  "Metadata": {},
+  "Resources": {
+    "ChrxrRecordSetGroup": {
+      "Type": "AWS::Route53::RecordSetGroup",
+      "Properties": {
+        "HostedZoneId": { "Fn::ImportValue" : "STATICS3STACK-R53HOSTEDZONE" },
+        "RecordSets":[  
+          {
+            "Name": "chrxr.com",
+            "Type": "A",
+            "AliasTarget": {
+              "HostedZoneId" : "Z2FDTNDATAQYW2",
+              "DNSName" : { "Fn::ImportValue" : "STATICS3STACK-CLOUDFRONTDISTDOMAINNAME" }
+            }
+          }
+        ]
+      }
+    }
+    
+
+  },
+  "Outputs": {}
+}

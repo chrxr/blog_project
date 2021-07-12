@@ -7,7 +7,7 @@
     "StaticEfsFileSystem": {
       "Type": "AWS::EFS::FileSystem",
       "Properties": {
-        "Encrypted": false,
+        "Encrypted": true,
         "BackupPolicy": {
           "Status": "ENABLED"
         },
